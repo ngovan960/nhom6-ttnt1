@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-import { where } from "sequelize";
 
 export const userLogin = async (req, res) => {
   try {
@@ -179,5 +178,33 @@ export const resetPassword = async (req, res) => {
   } catch (error) {
     console.error("Error in reset password:", error);
     res.status(500).json({ message: "Server error during reset password" });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { fullname, phone } = requestAnimationFrame.body;
+    if (!fullname && !phone && !avatar) {
+      return res.status(400).json({ message: "Không có dữ liệu để cập nhật" });
+    }
+
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User không tồn tại" });
+    }
+
+    if (fullname) user.fullname = fullname;
+    if (phone) user.phone = phone;
+
+    await user.save();
+
+    res.json({
+      message: "Cập nhật hồ sơ thành công",
+      data: user,
+    });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Lỗi server khi cập nhật hồ sơ" });
   }
 };
