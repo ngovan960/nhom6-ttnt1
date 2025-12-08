@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql_db
+    environment:
+      # Mật khẩu cho tài khoản root (để quản lý server)
+      MYSQL_ROOT_PASSWORD: password_123 
+      
+      # 1. Tên Database mà ứng dụng sẽ dùng
+      MYSQL_DATABASE: backend
+      
+      # 2. Tên Người dùng cho ứng dụng
+      MYSQL_USER: app_user
+      
+      # 3. Mật khẩu cho Người dùng ứng dụng (BẮT BUỘC!)
+      MYSQL_PASSWORD: strong_app_password_456 
+      
+    ports:
+      - "3306:3306"
+      
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  mysql_data:

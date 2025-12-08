@@ -1,0 +1,17 @@
+node_modules/
+**/node_modules/
+dist/
+build/
+.next/
+out/
+.cache/
+.eslintcache
+.parcel-cache/
+.next/
+.nuxt/
+coverage/
+*/front-end/build/
+*/front-end/.react-cache/
+*/front-end/.vite/
+*/backend/dist/
+*/backend/uploads/
