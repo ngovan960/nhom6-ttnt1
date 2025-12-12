@@ -3,6 +3,12 @@ import sequelize from "./config/db.js";
 import cors from "cors";
 
 import userRouter from "./routes/userRouter.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
+import wishlistRoutes from "./routes/wishlistRoutes.js";
+
+app.use("/api", reviewRoutes);
+app.use("/api", wishlistRoutes);
+
 
 const app = express();
 app.use(cors());
