@@ -1,21 +1,30 @@
-export default (sequelize, DataTypes) => {
-  const Product = sequelize.define("Product", {
-    name: DataTypes.STRING,
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
+
+const Product = sequelize.define(
+  "Product",
+  {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     description: DataTypes.TEXT,
-    price: DataTypes.DECIMAL,
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+    },
     discount_price: DataTypes.DECIMAL,
     thumbnail: DataTypes.STRING,
-    stock: DataTypes.INTEGER,
-  });
+    stock: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    category_id: DataTypes.INTEGER,
+  },
+  {
+    tableName: "Products",
+    timestamps: true,
+  }
+);
 
-  Product.associate = (models) => {
-    Product.belongsTo(models.Category, { foreignKey: "category_id" });
-    Product.hasMany(models.ProductImage, { foreignKey: "product_id" });
-    Product.hasMany(models.Review, { foreignKey: "product_id" });
-    Product.hasMany(models.Wishlist, { foreignKey: "product_id" });
-    Product.hasMany(models.OrderItem, { foreignKey: "product_id" });
-    Product.hasMany(models.AIRecommendation, { foreignKey: "product_id" });
-  };
-
-  return Product;
-};
+export default Product;

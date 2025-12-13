@@ -1,5 +1,9 @@
-export default (sequelize, DataTypes) => {
-  const Coupon = sequelize.define("Coupon", {
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
+
+const Coupon = sequelize.define(
+  "Coupon",
+  {
     code: { type: DataTypes.STRING, allowNull: false, unique: true },
     description: DataTypes.TEXT,
     discountType: {
@@ -16,11 +20,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.ENUM("active", "expired"),
       defaultValue: "active",
     },
-  });
+  },
+  {
+    tableName: "Coupons",
+    timestamps: true,
+  }
+);
 
-  Coupon.associate = (models) => {
-    Coupon.hasMany(models.Order, { foreignKey: "coupon_id" });
-  };
-
-  return Coupon;
-};
+export default Coupon;
