@@ -1,9 +1,15 @@
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize("backend", "root", "password_123", {
-  host: "localhost",
-  dialect: "mysql",
-  port: 3306,
-});
+const sequelize = new Sequelize(
+  "thuyloidoan",   // đúng tên database
+  "root",          // user
+  "123456",        // password
+  {
+    host: "127.0.0.1",
+    port: 3307,    // port Docker
+    dialect: "mysql",
+    logging: false,
+  }
+);
 
 export default sequelize;
