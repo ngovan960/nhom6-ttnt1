@@ -1,18 +1,15 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
-<<<<<<< HEAD
-const Cart = sequelize.define("Cart", {});
-
-Cart.associate = (models) => {
-  Cart.belongsTo(models.User, { foreignKey: "user_id" });
-  Cart.hasMany(models.CartItem, { foreignKey: "cart_id" });
-};
-
-=======
 const Cart = sequelize.define(
   "Cart",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -25,5 +22,15 @@ const Cart = sequelize.define(
   }
 );
 
->>>>>>> feature/compare-related
+/* ================= ASSOCIATIONS ================= */
+Cart.associate = (models) => {
+  Cart.belongsTo(models.User, {
+    foreignKey: "user_id",
+  });
+
+  Cart.hasMany(models.CartItem, {
+    foreignKey: "cart_id",
+  });
+};
+
 export default Cart;

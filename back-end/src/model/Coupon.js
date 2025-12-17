@@ -1,47 +1,55 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
-<<<<<<< HEAD
-
-const Coupon = sequelize.define("Coupon", {
-  code: { type: DataTypes.STRING, allowNull: false, unique: true },
-  description: DataTypes.TEXT,
-  discountType: {
-    type: DataTypes.ENUM("percent", "fixed"),
-    allowNull: false,
-  },
-  discountValue: { type: DataTypes.FLOAT, allowNull: false },
-  minOrderAmount: DataTypes.FLOAT,
-  maxDiscount: DataTypes.FLOAT,
-  quantity: DataTypes.INTEGER,
-  startDate: DataTypes.DATE,
-  endDate: DataTypes.DATE,
-  status: {
-    type: DataTypes.ENUM("active", "expired"),
-    defaultValue: "active",
-  },
-});
-
-Coupon.associate = (models) => {
-  Coupon.hasMany(models.Order, { foreignKey: "coupon_id" });
-};
-
-=======
 
 const Coupon = sequelize.define(
   "Coupon",
   {
-    code: { type: DataTypes.STRING, allowNull: false, unique: true },
-    description: DataTypes.TEXT,
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+
+    code: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+
+    description: {
+      type: DataTypes.TEXT,
+    },
+
     discountType: {
       type: DataTypes.ENUM("percent", "fixed"),
       allowNull: false,
     },
-    discountValue: { type: DataTypes.FLOAT, allowNull: false },
-    minOrderAmount: DataTypes.FLOAT,
-    maxDiscount: DataTypes.FLOAT,
-    quantity: DataTypes.INTEGER,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
+
+    discountValue: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+
+    minOrderAmount: {
+      type: DataTypes.FLOAT,
+    },
+
+    maxDiscount: {
+      type: DataTypes.FLOAT,
+    },
+
+    quantity: {
+      type: DataTypes.INTEGER,
+    },
+
+    startDate: {
+      type: DataTypes.DATE,
+    },
+
+    endDate: {
+      type: DataTypes.DATE,
+    },
+
     status: {
       type: DataTypes.ENUM("active", "expired"),
       defaultValue: "active",
@@ -53,5 +61,11 @@ const Coupon = sequelize.define(
   }
 );
 
->>>>>>> feature/compare-related
+/* ================= ASSOCIATIONS ================= */
+Coupon.associate = (models) => {
+  Coupon.hasMany(models.Order, {
+    foreignKey: "coupon_id",
+  });
+};
+
 export default Coupon;

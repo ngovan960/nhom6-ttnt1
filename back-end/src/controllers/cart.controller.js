@@ -1,7 +1,10 @@
 import db from "../model/index.js";
 
-const { Cart, CartItem } = db;
+const { Cart, CartItem, Product, ProductImage } = db;
 
+/**
+ * GET /cart
+ */
 export const getCart = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -10,7 +13,10 @@ export const getCart = async (req, res) => {
       where: { user_id: userId },
       include: {
         model: CartItem,
-        include: Product,
+        include: {
+          model: Product,
+          include: [{ model: ProductImage }],
+        },
       },
     });
 
@@ -18,14 +24,30 @@ export const getCart = async (req, res) => {
       return res.json({ items: [] });
     }
 
-    res.json(cart);
+    // ✅ map về đúng format FE cần
+    const items = cart.CartItems.map((item) => ({
+      _id: item.Product.id,
+      name: item.Product.name,
+      regularPrice: Number(item.Product.price),
+      discountedPrice: Number(item.Product.discount_price),
+      thumbnail: item.Product.thumbnail,
+      images: item.Product.ProductImages.map((img) => img.image_url),
+      stock: item.Product.stock,
+      isStock: item.Product.stock > 0,
+      quantity: item.quantity,
+    }));
+
+    res.json({ items });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
+/**
+ * POST /cart/items
+ */
 export const addToCart = async (req, res) => {
-  const { product_id, quantity } = req.body;
+  const { productId, quantity = 1 } = req.body;
   const userId = req.user.id;
 
   try {
@@ -36,10 +58,7 @@ export const addToCart = async (req, res) => {
     }
 
     const item = await CartItem.findOne({
-      where: {
-        cart_id: cart.id,
-        product_id,
-      },
+      where: { cart_id: cart.id, product_id: productId },
     });
 
     if (item) {
@@ -48,7 +67,7 @@ export const addToCart = async (req, res) => {
     } else {
       await CartItem.create({
         cart_id: cart.id,
-        product_id,
+        product_id: productId,
         quantity,
       });
     }
@@ -59,21 +78,33 @@ export const addToCart = async (req, res) => {
   }
 };
 
+/**
+ * PUT /cart/items/:productId
+ */
 export const updateCartItem = async (req, res) => {
-  const { id } = req.params;
-  const { quantity } = req.body;
+  const { productId } = req.params;
+  const { action } = req.body;
+  const userId = req.user.id;
 
   try {
-    const item = await CartItem.findByPk(id);
+    const cart = await Cart.findOne({ where: { user_id: userId } });
+    if (!cart) return res.status(404).json({ message: "Cart not found" });
+
+    const item = await CartItem.findOne({
+      where: { cart_id: cart.id, product_id: productId },
+    });
+
     if (!item) {
       return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
     }
 
-    if (quantity <= 0) {
-      await item.destroy();
-    } else {
-      item.quantity = quantity;
-      await item.save();
+    if (action === "decrease") {
+      item.quantity -= 1;
+      if (item.quantity <= 0) {
+        await item.destroy();
+      } else {
+        await item.save();
+      }
     }
 
     res.json({ message: "Cập nhật thành công" });
@@ -82,34 +113,38 @@ export const updateCartItem = async (req, res) => {
   }
 };
 
+/**
+ * DELETE /cart/items/:productId
+ */
 export const removeCartItem = async (req, res) => {
-  const { id } = req.params;
+  const { productId } = req.params;
+  const userId = req.user.id;
 
   try {
-    const item = await CartItem.findByPk(id);
-    if (!item) {
-      return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
-    }
+    const cart = await Cart.findOne({ where: { user_id: userId } });
+    if (!cart) return res.json({ message: "Cart empty" });
 
-    await item.destroy();
+    await CartItem.destroy({
+      where: { cart_id: cart.id, product_id: productId },
+    });
+
     res.json({ message: "Đã xóa sản phẩm" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
+/**
+ * DELETE /cart/clear
+ */
 export const clearCart = async (req, res) => {
   const userId = req.user.id;
 
   try {
     const cart = await Cart.findOne({ where: { user_id: userId } });
-    if (!cart) {
-      return res.json({ message: "Giỏ hàng trống" });
-    }
+    if (!cart) return res.json({ message: "Giỏ hàng trống" });
 
-    await CartItem.destroy({
-      where: { cart_id: cart.id },
-    });
+    await CartItem.destroy({ where: { cart_id: cart.id } });
 
     res.json({ message: "Đã xóa toàn bộ giỏ hàng" });
   } catch (err) {

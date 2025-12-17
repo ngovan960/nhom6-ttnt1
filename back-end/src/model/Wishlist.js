@@ -1,15 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
-<<<<<<< HEAD
-const Wishlist = sequelize.define("Wishlist", {});
-
-Wishlist.associate = (models) => {
-  Wishlist.belongsTo(models.User, { foreignKey: "user_id" });
-  Wishlist.belongsTo(models.Product, { foreignKey: "product_id" });
-};
-
-=======
 const Wishlist = sequelize.define(
   "Wishlist",
   {
@@ -18,6 +9,7 @@ const Wishlist = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
+
     product_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -30,5 +22,15 @@ const Wishlist = sequelize.define(
   }
 );
 
->>>>>>> feature/compare-related
+/* ================= ASSOCIATIONS ================= */
+Wishlist.associate = (models) => {
+  Wishlist.belongsTo(models.User, {
+    foreignKey: "user_id",
+  });
+
+  Wishlist.belongsTo(models.Product, {
+    foreignKey: "product_id",
+  });
+};
+
 export default Wishlist;
