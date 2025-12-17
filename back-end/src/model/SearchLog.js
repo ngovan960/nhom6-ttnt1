@@ -1,11 +1,12 @@
-export default (sequelize, DataTypes) => {
-  const SearchLog = sequelize.define("SearchLog", {
-    keyword: DataTypes.STRING,
-  });
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
 
-  SearchLog.associate = (models) => {
-    SearchLog.belongsTo(models.User, { foreignKey: "user_id" });
-  };
+const SearchLog = sequelize.define("SearchLog", {
+  keyword: DataTypes.STRING,
+});
 
-  return SearchLog;
+SearchLog.associate = (models) => {
+  SearchLog.belongsTo(models.User, { foreignKey: "user_id" });
 };
+
+export default SearchLog;

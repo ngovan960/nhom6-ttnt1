@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import User from "../model/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -155,7 +156,7 @@ export const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
 
-    const user = await user.findOne({
+    const user = await User.findOne({
       where: {
         reset_token: token,
         reset_token_expire: { [Op.gt]: Date.now() },
@@ -184,8 +185,8 @@ export const resetPassword = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { fullname, phone } = requestAnimationFrame.body;
-    if (!fullname && !phone && !avatar) {
+    const { fullname, phone } = req.body;
+    if (!fullname && !phone) {
       return res.status(400).json({ message: "Không có dữ liệu để cập nhật" });
     }
 

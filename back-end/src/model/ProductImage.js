@@ -1,11 +1,12 @@
-export default (sequelize, DataTypes) => {
-  const ProductImage = sequelize.define("ProductImage", {
-    image_url: DataTypes.STRING,
-  });
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
 
-  ProductImage.associate = (models) => {
-    ProductImage.belongsTo(models.Product, { foreignKey: "product_id" });
-  };
+const ProductImage = sequelize.define("ProductImage", {
+  image_url: DataTypes.STRING,
+});
 
-  return ProductImage;
+ProductImage.associate = (models) => {
+  ProductImage.belongsTo(models.Product, { foreignKey: "product_id" });
 };
+
+export default ProductImage;

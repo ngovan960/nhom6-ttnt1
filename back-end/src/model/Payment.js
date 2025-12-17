@@ -1,55 +1,56 @@
-export default (sequelize, DataTypes) => {
-  const Payment = sequelize.define("Payment", {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
 
-    order_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+const Payment = sequelize.define("Payment", {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
 
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+  order_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 
-    amount: {
-      type: DataTypes.DECIMAL(12, 2),
-      allowNull: false,
-    },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 
-    method: {
-      type: DataTypes.ENUM("cod", "momo", "vnpay", "banking"),
-      allowNull: false,
-      defaultValue: "cod",
-    },
+  amount: {
+    type: DataTypes.DECIMAL(12, 2),
+    allowNull: false,
+  },
 
-    status: {
-      type: DataTypes.ENUM("pending", "paid", "failed", "refunded"),
-      allowNull: false,
-      defaultValue: "pending",
-    },
+  method: {
+    type: DataTypes.ENUM("cod", "momo", "vnpay", "banking"),
+    allowNull: false,
+    defaultValue: "cod",
+  },
 
-    paid_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
+  status: {
+    type: DataTypes.ENUM("pending", "paid", "failed", "refunded"),
+    allowNull: false,
+    defaultValue: "pending",
+  },
+
+  paid_at: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
+});
+
+Payment.associate = (models) => {
+  Payment.belongsTo(models.Order, {
+    foreignKey: "order_id",
+    onDelete: "CASCADE",
   });
 
-  Payment.associate = (models) => {
-    Payment.belongsTo(models.Order, {
-      foreignKey: "order_id",
-      onDelete: "CASCADE",
-    });
-
-    Payment.belongsTo(models.User, {
-      foreignKey: "user_id",
-      onDelete: "CASCADE",
-    });
-  };
-
-  return Payment;
+  Payment.belongsTo(models.User, {
+    foreignKey: "user_id",
+    onDelete: "CASCADE",
+  });
 };
+
+export default Payment;

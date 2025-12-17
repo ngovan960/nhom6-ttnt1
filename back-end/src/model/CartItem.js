@@ -1,12 +1,13 @@
-export default (sequelize, DataTypes) => {
-  const CartItem = sequelize.define("CartItem", {
-    quantity: DataTypes.INTEGER,
-  });
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
 
-  CartItem.associate = (models) => {
-    CartItem.belongsTo(models.Cart, { foreignKey: "cart_id" });
-    CartItem.belongsTo(models.Product, { foreignKey: "product_id" });
-  };
+const CartItem = sequelize.define("CartItem", {
+  quantity: DataTypes.INTEGER,
+});
 
-  return CartItem;
+CartItem.associate = (models) => {
+  CartItem.belongsTo(models.Cart, { foreignKey: "cart_id" });
+  CartItem.belongsTo(models.Product, { foreignKey: "product_id" });
 };
+
+export default CartItem;

@@ -1,5 +1,6 @@
-export default (sequelize, DataTypes) => {
-  const ProductCompareItem = sequelize.define("ProductCompareItem", {});
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
 
-  return ProductCompareItem;
-};
+const ProductCompareItem = sequelize.define("ProductCompareItem", {});
+
+export default ProductCompareItem;

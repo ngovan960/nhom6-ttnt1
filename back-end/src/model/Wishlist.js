@@ -1,10 +1,11 @@
-export default (sequelize, DataTypes) => {
-  const Wishlist = sequelize.define("Wishlist", {});
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
 
-  Wishlist.associate = (models) => {
-    Wishlist.belongsTo(models.User, { foreignKey: "user_id" });
-    Wishlist.belongsTo(models.Product, { foreignKey: "product_id" });
-  };
+const Wishlist = sequelize.define("Wishlist", {});
 
-  return Wishlist;
+Wishlist.associate = (models) => {
+  Wishlist.belongsTo(models.User, { foreignKey: "user_id" });
+  Wishlist.belongsTo(models.Product, { foreignKey: "product_id" });
 };
+
+export default Wishlist;
