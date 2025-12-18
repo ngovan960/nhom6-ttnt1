@@ -175,19 +175,19 @@ const CartPage: React.FC<CartPageProps> = ({ onBack, onCheckout }) => {
                 <span className="text-base">Phí vận chuyển</span>
                 <span className="text-green-600 font-medium">Miễn phí</span>
               </div>
-              <div className="flex justify-between items-center text-[#6f6189] dark:text-gray-400">
+              {/* <div className="flex justify-between items-center text-[#6f6189] dark:text-gray-400">
                 <span className="text-base">Giảm giá</span>
                 <span className="text-[#131118] dark:text-white font-medium">-0đ</span>
-              </div>
+              </div> */}
             </div>
             {/* Coupon Input */}
-            <div className="flex gap-2 mb-6">
+            {/* <div className="flex gap-2 mb-6">
               <div className="relative flex-1">
                 <input className="w-full bg-[#f6f6f8] dark:bg-gray-800 border-none rounded-xl px-4 py-2.5 text-sm text-[#131118] dark:text-white placeholder:text-[#6f6189] focus:ring-2 focus:ring-primary/20" placeholder="Mã giảm giá" />
                 <span className="material-symbols-outlined absolute right-3 top-2.5 text-[#6f6189] text-[20px]">local_offer</span>
               </div>
               <button className="bg-[#f6f6f8] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[#131118] dark:text-white font-bold rounded-xl px-4 text-sm transition-colors">Áp dụng</button>
-            </div>
+            </div> */}
             <div className="h-px w-full bg-[#f2f0f4] dark:bg-gray-800 mb-6"></div>
             <div className="flex justify-between items-end mb-6">
               <span className="text-[#131118] dark:text-white text-lg font-bold">Tổng cộng</span>
