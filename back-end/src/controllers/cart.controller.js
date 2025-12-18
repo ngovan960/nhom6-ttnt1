@@ -7,31 +7,41 @@ const { Cart, CartItem, Product, ProductImage } = db;
  */
 export const getCart = async (req, res) => {
   try {
+    // Lấy userId từ token do middleware auth gán
     const userId = req.user.id;
+    console.log("userId:", userId);
 
+    // Lấy cart kèm items → product → images
     const cart = await Cart.findOne({
       where: { user_id: userId },
-      include: {
-        model: CartItem,
-        include: {
-          model: Product,
-          include: [{ model: ProductImage }],
+      include: [
+        {
+          model: CartItem,
+          // no alias specified in association; use default "CartItems"
+          include: [
+            {
+              model: Product,
+              // no alias specified in association; accessed as `Product`
+              include: [
+                { model: ProductImage, as: "images" }, // Product.hasMany(ProductImage, { as: 'images' })
+              ],
+            },
+          ],
         },
-      },
+      ],
     });
 
-    if (!cart) {
-      return res.json({ items: [] });
-    }
+    // Nếu cart trống
+    if (!cart) return res.json({ items: [] });
 
-    // ✅ map về đúng format FE cần
+    // Map dữ liệu theo format FE cần
     const items = cart.CartItems.map((item) => ({
       _id: item.Product.id,
       name: item.Product.name,
       regularPrice: Number(item.Product.price),
       discountedPrice: Number(item.Product.discount_price),
       thumbnail: item.Product.thumbnail,
-      images: item.Product.ProductImages.map((img) => img.image_url),
+      images: (item.Product.images || []).map((img) => img.image_url),
       stock: item.Product.stock,
       isStock: item.Product.stock > 0,
       quantity: item.quantity,
@@ -39,10 +49,10 @@ export const getCart = async (req, res) => {
 
     res.json({ items });
   } catch (err) {
+    console.error("getCart error:", err);
     res.status(500).json({ message: err.message });
   }
 };
-
 /**
  * POST /cart/items
  */
@@ -82,11 +92,13 @@ export const addToCart = async (req, res) => {
  * PUT /cart/items/:productId
  */
 export const updateCartItem = async (req, res) => {
-  const { productId } = req.params;
+  const productId = req.params.id;
   const { action } = req.body;
   const userId = req.user.id;
 
   try {
+    if (!productId)
+      return res.status(400).json({ message: "product id missing" });
     const cart = await Cart.findOne({ where: { user_id: userId } });
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
@@ -117,12 +129,15 @@ export const updateCartItem = async (req, res) => {
  * DELETE /cart/items/:productId
  */
 export const removeCartItem = async (req, res) => {
-  const { productId } = req.params;
+  const productId = req.params.id;
   const userId = req.user.id;
 
   try {
     const cart = await Cart.findOne({ where: { user_id: userId } });
     if (!cart) return res.json({ message: "Cart empty" });
+
+    if (!productId)
+      return res.status(400).json({ message: "product id missing" });
 
     await CartItem.destroy({
       where: { cart_id: cart.id, product_id: productId },

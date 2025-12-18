@@ -55,6 +55,7 @@ Product.associate = (models) => {
 
   Product.hasMany(models.ProductImage, {
     foreignKey: "product_id",
+    as: "images",
   });
 
   Product.hasMany(models.Review, {

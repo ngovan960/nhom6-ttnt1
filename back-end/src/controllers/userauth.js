@@ -105,7 +105,7 @@ export const forgotPassword = async (req, res) => {
       reset_token_expire: resetTokenExpiry,
     });
     // tao link reset password
-    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+    const resetLink = `http://172.24.80.1:3000/reset-password/${resetToken}`;
 
     // gui mail
     const transporter = nodemailer.createTransport({
