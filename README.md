@@ -1,4 +1,3 @@
-# nhom6-ttnt1
 # E-Commerce Backend API
 
 API backend cho hệ thống bán hàng trực tuyến.
@@ -8,7 +7,7 @@ API backend cho hệ thống bán hàng trực tuyến.
 ## Base URL
 
 ```
-http://localhost:3001/api
+http://localhost:3000/api
 ```
 
 ---
@@ -206,8 +205,84 @@ http://localhost:3001/api
 
 ---
 
+## 5. Coupons (Mã giảm giá)
 
+### 5.1. Create coupon
 
-* Tất cả các route `POST`, `PUT`, `DELETE` cần **Authorization header** nếu yêu cầu người dùng đăng nhập.
-* Token lấy từ login/register: `Authorization: Bearer <token>`
+* **URL:** `/coupon`
+* **Method:** `POST`
+* **Body:**
+
+```json
+{
+  "code": "DISCOUNT10",
+  "discount": 10
+}
+```
+
+* **Response:**
+
+```json
+{
+  "id": 1,
+  "code": "DISCOUNT10",
+  "discount": 10
+}
+```
+
+### 5.2. Validate coupon
+
+* **URL:** `/coupon/validate`
+* **Method:** `POST`
+* **Body:**
+
+```json
+{
+  "code": "DISCOUNT10"
+}
+```
+
+* **Response:**
+
+```json
+{
+  "valid": true,
+  "discount": 10
+}
+```
+
+---
+
+## 6. Checkout (Thanh toán)
+
+### 6.1. Checkout order
+
+* **URL:** `/checkout`
+* **Method:** `POST`
+* **Headers:** `Authorization: Bearer <token>`
+* **Body:**
+
+```json
+{
+  "user_id": 1,
+  "cart_items": [
+    { "product_id": 1, "quantity": 2 },
+    { "product_id": 3, "quantity": 1 }
+  ],
+  "address_id": 2
+}
+```
+
+* **Response:**
+
+```json
+{
+  "order_id": 10,
+  "status": "pending",
+  "total": 3200
+}
+```
+
+---
+
 
