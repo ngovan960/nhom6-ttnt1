@@ -54,12 +54,17 @@ const CheckoutPage: React.FC<{ onBack: () => void; onComplete?: () => void }> = 
     };
 
     const placeOrder = async () => {
+        // Prevent checkout if cart is empty
+        if (items.length === 0) return alert('Giỏ hàng của bạn đang trống');
+
         if (!fullname || !phone || !address) return alert('Vui lòng điền đầy đủ thông tin giao hàng');
         setLoading(true);
         try {
             const payload = {
                 couponCode: couponInfo?.valid ? coupon : undefined,
                 address_id: selectedAddressId ?? null,
+                // Send manual address when no saved address is selected
+                shipping_address: selectedAddressId ? undefined : address,
                 payment_method: paymentMethod,
                 shipping_fee: 0,
             } as any;

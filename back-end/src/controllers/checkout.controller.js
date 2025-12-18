@@ -12,13 +12,21 @@ const {
 } = db;
 
 export const checkout = async (req, res) => {
-  const userId = req.user.id;
-  const { couponCode, address_id, payment_method, shipping_fee = 0 } = req.body;
-
-  const transaction = await sequelize.transaction();
-
+  let transaction; // moved transaction declaration out to allow safe rollback
   try {
-    // 1️⃣ Lấy cart
+    // Ensure user is authenticated and avoid errors before try/catch
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "Bạn chưa đăng nhập" });
+    }
+    const userId = req.user.id;
+
+    // Coerce shipping_fee to number to avoid string concatenation/type issues
+    const { couponCode, address_id, payment_method, shipping_fee = 0 } = req.body;
+    const shippingFee = Number(shipping_fee) || 0;
+
+    transaction = await sequelize.transaction();
+
+    // 1️⃣ Lấy cart (use explicit UPDATE lock)
     const cart = await Cart.findOne({
       where: { user_id: userId },
       include: {
@@ -26,34 +34,33 @@ export const checkout = async (req, res) => {
         include: [Product],
       },
       transaction,
-      lock: true,
+      lock: transaction.LOCK.UPDATE,
     });
 
-    if (!cart || cart.CartItems.length === 0) {
+    if (!cart || !cart.CartItems || cart.CartItems.length === 0) {
       await transaction.rollback();
       return res.status(400).json({
         message: "Giỏ hàng trống",
       });
     }
 
-    // 2️⃣ Tính tổng tiền
+    // 2️⃣ Tính tổng tiền (ensure numeric price)
     let totalPrice = 0;
-
     for (const item of cart.CartItems) {
       const product = item.Product;
 
-      if (product.stock < item.quantity) {
+      if ((product.stock ?? 0) < item.quantity) {
         await transaction.rollback();
         return res.status(400).json({
           message: `Sản phẩm ${product.name} không đủ tồn kho`,
         });
       }
 
-      const price = product.discount_price ?? product.price;
+      const price = Number(product.discount_price ?? product.price) || 0;
       totalPrice += price * item.quantity;
     }
 
-    // 3️⃣ Áp coupon (nếu có)
+    // 3️⃣ Áp coupon (nếu có) with numeric coercion and explicit lock
     let discount = 0;
     let coupon = null;
 
@@ -61,7 +68,7 @@ export const checkout = async (req, res) => {
       coupon = await Coupon.findOne({
         where: { code: couponCode },
         transaction,
-        lock: true,
+        lock: transaction.LOCK.UPDATE,
       });
 
       if (!coupon || coupon.status !== "active" || coupon.quantity <= 0) {
@@ -71,7 +78,7 @@ export const checkout = async (req, res) => {
         });
       }
 
-      if (coupon.minOrderAmount && totalPrice < coupon.minOrderAmount) {
+      if (coupon.minOrderAmount && totalPrice < Number(coupon.minOrderAmount)) {
         await transaction.rollback();
         return res.status(400).json({
           message: "Đơn hàng chưa đủ điều kiện áp mã",
@@ -79,12 +86,13 @@ export const checkout = async (req, res) => {
       }
 
       if (coupon.discountType === "percent") {
-        discount = (totalPrice * coupon.discountValue) / 100;
-        if (coupon.maxDiscount && discount > coupon.maxDiscount) {
-          discount = coupon.maxDiscount;
+        const discountValue = Number(coupon.discountValue) || 0;
+        discount = (totalPrice * discountValue) / 100;
+        if (coupon.maxDiscount && discount > Number(coupon.maxDiscount)) {
+          discount = Number(coupon.maxDiscount);
         }
       } else {
-        discount = coupon.discountValue;
+        discount = Number(coupon.discountValue) || 0;
       }
 
       if (discount > totalPrice) discount = totalPrice;
@@ -93,25 +101,25 @@ export const checkout = async (req, res) => {
       await coupon.save({ transaction });
     }
 
-    const finalPrice = totalPrice - discount + shipping_fee;
+    const finalPrice = Math.max(0, totalPrice - discount) + shippingFee;
 
-    // 4️⃣ Tạo order
+    // 4️⃣ Tạo order (use numeric shipping_fee)
     const order = await Order.create(
       {
         user_id: userId,
         address_id,
         payment_method,
         total_price: finalPrice,
-        shipping_fee,
+        shipping_fee: shippingFee,
         status: "pending",
       },
       { transaction }
     );
 
-    // 5️⃣ Tạo order items + trừ kho
+    // 5️⃣ Tạo order items + trừ kho (ensure price numeric)
     for (const item of cart.CartItems) {
       const product = item.Product;
-      const price = product.discount_price ?? product.price;
+      const price = Number(product.discount_price ?? product.price) || 0;
 
       await OrderItem.create(
         {
@@ -149,7 +157,9 @@ export const checkout = async (req, res) => {
       order,
     });
   } catch (error) {
-    await transaction.rollback();
+    if (transaction) {
+      await transaction.rollback();
+    }
     console.error("CHECKOUT ERROR:", error);
     return res.status(500).json({
       message: "Lỗi server",
