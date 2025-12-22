@@ -167,7 +167,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onBack, onRegister, onLoginSucces
                 </div>
 
                 {/* Social Buttons */}
-                <div className="grid grid-cols-2 gap-4">
+                {/* <div className="grid grid-cols-2 gap-4">
                   <button type="button" className="flex h-12 items-center justify-center gap-2 rounded-lg border border-[#dbdbe6] dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                     <svg className="h-5 w-5" viewBox="0 0 24 24" data-alt="Biểu tượng Google">
                       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
@@ -183,7 +183,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onBack, onRegister, onLoginSucces
                     </svg>
                     <span className="text-sm font-medium text-[#111118] dark:text-white">Facebook</span>
                   </button>
-                </div>
+                </div> */}
               </form>
 
               {/* Footer of Card */}

@@ -88,7 +88,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, onLogin }) => {
                   </div>
 
                   {/* Social Login */}
-                  <div className="grid grid-cols-2 gap-4 mb-6">
+                  {/* <div className="grid grid-cols-2 gap-4 mb-6">
                     <button className="flex items-center justify-center gap-2 h-12 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors font-medium text-sm text-slate-700 dark:text-slate-200">
                       <span className="w-5 h-5 inline-block" />
                       Google
@@ -97,15 +97,15 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onBack, onLogin }) => {
                       <span className="w-5 h-5 inline-block" />
                       Facebook
                     </button>
-                  </div>
+                  </div> */}
 
                   <div className="relative mb-6">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
                     </div>
-                    <div className="relative flex justify-center text-sm">
+                    {/* <div className="relative flex justify-center text-sm">
                       <span className="px-2 bg-white dark:bg-[#1a1a2e] text-slate-500">Hoặc đăng ký bằng email</span>
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Form */}

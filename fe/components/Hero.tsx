@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
           <div className="flex flex-col gap-3">
             <div className="inline-flex self-start items-center gap-1 rounded-full bg-primary/20 px-3 py-1 text-xs font-bold text-primary dark:text-[#f9f506]">
               <span className="material-symbols-outlined text-sm">school</span>
-              <span>Back to School</span>
+              <span className="text-black">Back to School</span>
             </div>
             <h1 className="text-[#181811] dark:text-white text-4xl md:text-5xl font-black leading-tight tracking-tight">
               Công nghệ đỉnh cao<br />cho tương lai
