@@ -1,62 +1,44 @@
-"use strict";
+export const createAddress = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const {
+      full_name,
+      phone,
+      address_detail,``
+      city,
+      district,
+      ward,
+      is_default = false,
+    } = req.body;
 
-/** @type {import('sequelize-cli').Migration} */
-module.exports = {
-  // Phương thức 'up' được chạy khi bạn thực hiện migration
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Addresses", {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
-      // Trường khóa ngoại liên kết với bảng 'Users'
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false, // Giả định địa chỉ phải thuộc về một người dùng
-        references: {
-          model: "Users", // Tên bảng đích (thường là số nhiều)
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      full_name: {
-        type: Sequelize.STRING,
-      },
-      phone: {
-        type: Sequelize.STRING,
-      },
-      address_detail: {
-        type: Sequelize.TEXT,
-      },
-      city: {
-        type: Sequelize.STRING,
-      },
-      district: {
-        type: Sequelize.STRING,
-      },
-      ward: {
-        type: Sequelize.STRING,
-      },
-      is_default: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false, // Thiết lập giá trị mặc định là false
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
+    // ✅ Validate trước khi vào DB
+    if (!full_name || !phone || !address_detail || !city || !district || !ward) {
+      return res.status(400).json({
+        message: "Vui lòng nhập đầy đủ thông tin địa chỉ",
+      });
+    }
+
+    // ✅ Nếu set default → bỏ default cũ
+    if (is_default) {
+      await Address.update(
+        { is_default: false },
+        { where: { user_id: userId } }
+      );
+    }
+
+    const address = await Address.create({
+      full_name,
+      phone,
+      address_detail,
+      city,
+      district,
+      ward,
+      is_default,
+      user_id: userId,
     });
-  },
 
-  // Phương thức 'down' được chạy khi bạn hoàn tác (undo) migration
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Addresses");
-  },
+    res.status(201).json(address);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };

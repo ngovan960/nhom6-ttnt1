@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 /* ================== DATABASE ================== */
 (async () => {
   try {
+
     await db.sequelize.authenticate();
     console.log("✅ DB connected successfully");
   } catch (error) {
