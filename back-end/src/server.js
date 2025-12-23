@@ -8,6 +8,7 @@ import userRouter from "./routes/userRouter.js";
 
 import productRoutes from "./routes/productRoutes.js";
 import compareRoutes from "./routes/compareRoutes.js";
+import categoryRoutes from "./routes/category.routes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 
@@ -19,6 +20,7 @@ import addressRoutes from "./routes/address.route.js";
 import paymentRoutes from "./routes/payment.route.js";
 import orderRoutes from "./routes/order.route.js";
 import searchRoutes from "./routes/search.routes.js";
+import aiRoutes from "./routes/ai.routes.js";
 
 const app = express();
 
@@ -42,6 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", userRouter);
 
 app.use("/api/products", productRoutes);
+app.use("/api/categories", categoryRoutes);
 app.use("/api/compare", compareRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/wishlist", wishlistRoutes);
@@ -54,6 +57,7 @@ app.use("/api/address", addressRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/search", searchRoutes);
+app.use("/api/ai", aiRoutes);
 
 /* ================== TEST ================== */
 app.get("/", (req, res) => {
