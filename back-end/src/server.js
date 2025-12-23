@@ -5,6 +5,7 @@ import db from "./model/index.js";
 
 /* ===== ROUTES (ĐÚNG TÊN FILE ĐANG CÓ) ===== */
 import userRouter from "./routes/userRouter.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 import productRoutes from "./routes/productRoutes.js";
 import compareRoutes from "./routes/compareRoutes.js";
@@ -39,6 +40,7 @@ app.use(express.urlencoded({ extended: true }));
 
 /* ================== ROUTES ================== */
 app.use("/api/auth", userRouter);
+app.use("/api/admin", adminRoutes);
 
 app.use("/api/products", productRoutes);
 app.use("/api/compare", compareRoutes);

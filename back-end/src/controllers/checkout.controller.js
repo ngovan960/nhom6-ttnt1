@@ -101,13 +101,52 @@ export const checkout = async (req, res) => {
       await coupon.save({ transaction });
     }
 
+    // 3.5️⃣ Handle Address (Get existing or Create new)
+    let finalAddressId = address_id;
+    const { full_name, phone, address_detail, city, district, ward } = req.body;
+
+    if (!finalAddressId) {
+       // Case: New Address
+       // Relaxed validation: Only require the essentials if the user input is simple
+       if (!full_name || !phone || !address_detail) {
+          await transaction.rollback();
+          console.log("Missing address fields:", { full_name, phone, address_detail });
+          return res.status(400).json({ 
+            message: "Vui lòng điền đủ: Họ tên, SĐT và Địa chỉ chi tiết" 
+          });
+       }
+
+       const newAddress = await db.Address.create({
+         user_id: userId,
+         full_name,
+         phone,
+         address_detail,
+         city: city || "", // Default to empty string if missing
+         district: district || "",
+         ward: ward || "",
+         is_default: false
+       }, { transaction });
+       
+       finalAddressId = newAddress.id;
+    } else {
+       // Case: Validate Existing Address
+       const address = await db.Address.findOne({
+          where: { id: finalAddressId, user_id: userId }
+       });
+       if (!address) {
+          await transaction.rollback();
+          return res.status(400).json({ message: "Địa chỉ giao hàng không hợp lệ" });
+       }
+    }
+
+    // 3.6️⃣ Calculate Final Price
     const finalPrice = Math.max(0, totalPrice - discount) + shippingFee;
 
-    // 4️⃣ Tạo order (use numeric shipping_fee)
+    // 4️⃣ Tạo order (use finalAddressId)
     const order = await Order.create(
       {
         user_id: userId,
-        address_id,
+        address_id: finalAddressId,
         payment_method,
         total_price: finalPrice,
         shipping_fee: shippingFee,
@@ -162,7 +201,7 @@ export const checkout = async (req, res) => {
     }
     console.error("CHECKOUT ERROR:", error);
     return res.status(500).json({
-      message: "Lỗi server",
+      message: "Lỗi server: " + error.message,
     });
   }
 };

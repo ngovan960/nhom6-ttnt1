@@ -64,7 +64,10 @@ const CheckoutPage: React.FC<{ onBack: () => void; onComplete?: () => void }> = 
                 couponCode: couponInfo?.valid ? coupon : undefined,
                 address_id: selectedAddressId ?? null,
                 // Send manual address when no saved address is selected
-                shipping_address: selectedAddressId ? undefined : address,
+                // Map Frontend 'address' string to Backend 'address_detail'
+                address_detail: selectedAddressId ? undefined : address,
+                full_name: fullname,
+                phone: phone,
                 payment_method: paymentMethod,
                 shipping_fee: 0,
             } as any;
