@@ -7,7 +7,10 @@ import nodemailer from "nodemailer";
 
 export const userLogin = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body || {};
+    if (!email || !password) {
+      return res.status(400).json({ message: "Thiếu email hoặc password" });
+    }
 
     // kiem tra du lieu
     const user = await User.findOne({ where: { email: email } });

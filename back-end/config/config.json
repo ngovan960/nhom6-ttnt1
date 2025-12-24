@@ -1,10 +1,11 @@
 {
   "development": {
     "username": "root",
-    "password": "password_123",
-    "database": "backend",
+    "password": "123456",
+    "database": "thuyloidoan",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "port": 3306
+    "port": 3307
   }
 }
+
