@@ -106,10 +106,5 @@ Chào mừng bạn đến với **TechZone**, một hệ thống thương mại 
 └── README.md
 ```
 
----
 
-## 🤝 Đóng Góp
-Nếu bạn có bất kỳ đóng góp nào cho dự án, vui lòng tạo **Pull Request** hoặc mở một **Issue**.
-
----
 *Dự án được phát triển bởi Nhóm 6*
