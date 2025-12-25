@@ -6,7 +6,7 @@ import { formatCurrency } from '../constants';
 import checkoutService from '../services/checkout.service';
 import { useAuthStore } from '../store/useAuthStore';
 
-const CheckoutPage: React.FC<{ onBack: () => void; onComplete?: () => void }> = ({ onBack, onComplete }) => {
+const CheckoutPage: React.FC<{ onBack: () => void; onComplete?: () => void; onAddAddress: () => void }> = ({ onBack, onComplete, onAddAddress }) => {
     const items = useCartStore((s) => s.items);
     const subtotal = items.reduce((s, it) => s + it.price * it.quantity, 0);
     const [coupon, setCoupon] = useState('');
@@ -30,8 +30,12 @@ const CheckoutPage: React.FC<{ onBack: () => void; onComplete?: () => void }> = 
                 if (Array.isArray(resp)) {
                     setAddresses(resp);
                     if (resp.length > 0) {
-                        setSelectedAddressId(resp[0].id);
-                        setAddress(resp[0].full_address || resp[0].address || '');
+                        // Find default address or use first one
+                        const defaultAddr = resp.find((a: any) => a.is_default) || resp[0];
+                        setSelectedAddressId(defaultAddr.id);
+                        setAddress(defaultAddr.address_detail || defaultAddr.full_address || defaultAddr.address || '');
+                        setFullname(defaultAddr.full_name || user.fullname || '');
+                        setPhone(defaultAddr.phone || '');
                     }
                 }
             } catch (e) {
@@ -171,16 +175,52 @@ const CheckoutPage: React.FC<{ onBack: () => void; onComplete?: () => void }> = 
 
                                 <div className="mb-4">
                                     {addresses && addresses.length > 0 ? (
-                                        <div className="mb-3">
-                                            <label className="text-sm font-medium mb-2 block">Chọn địa chỉ</label>
-                                            <select value={selectedAddressId ?? ''} onChange={(e) => { const v = e.target.value; setSelectedAddressId(v ? Number(v) : null); const a = addresses.find((x) => x.id === Number(v)); if (a) setAddress(a.full_address || a.address || ''); }} className="w-full p-2 rounded-lg">
-                                                <option value="">-- Chọn địa chỉ --</option>
-                                                {addresses.map((a) => (
-                                                    <option key={a.id} value={a.id}>{a.label || a.full_name || a.address || `Địa chỉ ${a.id}`}</option>
+                                        <div className="mb-4">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <label className="text-sm font-medium">Chọn địa chỉ nhận hàng</label>
+                                                <button onClick={onAddAddress} className="text-sm text-primary hover:underline flex items-center gap-1">
+                                                    <span className="material-symbols-outlined text-base">add</span> Thêm địa chỉ mới
+                                                </button>
+                                            </div>
+                                            <div className="space-y-3">
+                                                {addresses.map((addr) => (
+                                                    <div
+                                                        key={addr.id}
+                                                        onClick={() => {
+                                                            setSelectedAddressId(addr.id);
+                                                            setAddress(addr.address_detail || addr.full_address || '');
+                                                            setFullname(addr.full_name || '');
+                                                            setPhone(addr.phone || '');
+                                                        }}
+                                                        className={`border rounded-lg p-3 cursor-pointer transition-all relative ${selectedAddressId === addr.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-200 hover:border-primary/50'}`}
+                                                    >
+                                                        <div className="flex justify-between items-start">
+                                                            <div>
+                                                                <div className="font-bold text-sm flex items-center gap-2">
+                                                                    {addr.full_name}
+                                                                    <span className="font-normal text-gray-500 text-xs">| {addr.phone}</span>
+                                                                    {addr.is_default && <span className="bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded border border-gray-200">Mặc định</span>}
+                                                                </div>
+                                                                <div className="text-sm text-gray-600 mt-1 line-clamp-2">
+                                                                    {addr.address_detail}, {addr.ward}, {addr.district}, {addr.city}
+                                                                </div>
+                                                            </div>
+                                                            <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedAddressId === addr.id ? 'border-primary bg-primary' : 'border-gray-300'}`}>
+                                                                {selectedAddressId === addr.id && <span className="material-symbols-outlined text-white text-sm">check</span>}
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 ))}
-                                            </select>
+                                            </div>
                                         </div>
-                                    ) : null}
+                                    ) : (
+                                        <div className="mb-4 p-4 border border-dashed border-gray-300 rounded-lg text-center">
+                                            <p className="text-sm text-gray-500 mb-2">Bạn chưa có địa chỉ nhận hàng nào</p>
+                                            <button onClick={onAddAddress} className="text-primary font-medium hover:underline flex items-center justify-center gap-1 w-full">
+                                                <span className="material-symbols-outlined">add_circle</span> Thêm địa chỉ mới
+                                            </button>
+                                        </div>
+                                    )}
                                     <div className="flex gap-2">
                                         <input value={coupon} onChange={(e) => setCoupon(e.target.value)} placeholder="Mã giảm giá" className="flex-1 form-input p-3 rounded-lg" />
                                         <button onClick={applyCoupon} disabled={loading} className="px-4 rounded-lg bg-gray-100 hover:bg-gray-200">Áp dụng</button>

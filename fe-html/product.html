@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TechAdmin - Quản lý Sản phẩm</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d0df2",
+                        "primary-content": "#ffffff",
+                        "primary-light": "#eef0ff",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                        "surface": "#ffffff",
+                        "text-main": "#111118",
+                        "text-sub": "#60608a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem", 
+                        "lg": "0.75rem", 
+                        "xl": "1rem", 
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "soft": "0 2px 10px rgba(0, 0, 0, 0.03)",
+                        "card": "0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02)"
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light text-text-main font-display antialiased overflow-x-hidden">
+<div class="flex h-screen w-full bg-background-light relative">
+<aside class="fixed inset-y-0 left-0 z-40 w-64 bg-surface border-r border-gray-100 shadow-soft hidden md:flex flex-col h-full transition-transform">
+<div class="flex items-center gap-3 px-6 py-6 border-b border-gray-50">
+<div class="relative flex items-center justify-center size-10 rounded-xl bg-primary text-white shadow-lg shadow-blue-500/30">
+<span class="material-symbols-outlined text-[24px]">bolt</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-lg font-bold tracking-tight text-text-main leading-none">TechAdmin</h1>
+<p class="text-xs text-text-sub mt-1">Management Portal</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1 px-4 py-6 overflow-y-auto">
+<p class="px-2 text-xs font-semibold text-text-sub uppercase tracking-wider mb-2">Tổng quan</p>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-sub hover:bg-gray-50 hover:text-text-main transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+<span>Dashboard</span>
+</a>
+<p class="px-2 text-xs font-semibold text-text-sub uppercase tracking-wider mb-2 mt-6">Quản lý</p>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-sub hover:bg-gray-50 hover:text-text-main transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">category</span>
+<span>Danh mục</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium transition-colors" href="#">
+<span class="material-symbols-outlined" data-weight="fill">inventory_2</span>
+<span>Sản phẩm</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-sub hover:bg-gray-50 hover:text-text-main transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">shopping_bag</span>
+<span>Đơn hàng</span>
+<span class="ml-auto bg-red-50 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full">3</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-sub hover:bg-gray-50 hover:text-text-main transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">local_offer</span>
+<span>Khuyến mãi</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-sub hover:bg-gray-50 hover:text-text-main transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
+<span>Khách hàng</span>
+</a>
+</nav>
+<div class="p-4 border-t border-gray-50">
+<div class="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-gray-100" data-alt="User Avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4CqmaT5x68UlXbw6PYG1tDkfzvmFfpV2E355JYbDMc7BBMPt15rMlcj1tVgW8Ktczq3q0K5ENXXi0X7XlPzJTOTWJFJalTvOr3zPmFEnXoClyo4uuOd2okuvMmWrfVUl0Ldz-m2W7lDQdbJn6rejvPWb0-kWUqx-PrOkh4h_Rmxuvlml7tqlFfTrYluULWk2FeMiD_Ly2yoVcRZekrOcc_MFU026nMW0UVfKrnj_zG81cvwlQ4nM3souwVuDeRMR1o_ssTERhwoQH");'></div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-sm font-semibold text-text-main truncate">Admin User</p>
+<p class="text-xs text-text-sub truncate">admin@techstore.com</p>
+</div>
+<span class="material-symbols-outlined text-text-sub text-sm">more_vert</span>
+</div>
+</div>
+</aside>
+<main class="flex-1 md:ml-64 h-full flex flex-col min-h-0 overflow-hidden relative z-0">
+<header class="h-16 bg-surface/80 backdrop-blur-md border-b border-gray-100 flex items-center justify-between px-6 sticky top-0 z-20">
+<div class="flex items-center gap-4">
+<button class="md:hidden p-2 text-text-sub hover:bg-gray-100 rounded-lg">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="hidden sm:flex items-center text-sm text-text-sub">
+<span class="hover:text-primary cursor-pointer">Home</span>
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span class="hover:text-primary cursor-pointer">Quản lý</span>
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span class="font-medium text-text-main">Sản phẩm</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center relative">
+<span class="material-symbols-outlined absolute left-3 text-text-sub text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2 bg-background-light border-none rounded-full text-sm w-64 focus:ring-2 focus:ring-primary/20 text-text-main placeholder-text-sub" placeholder="Tìm kiếm nhanh..." type="text"/>
+</div>
+<button class="relative p-2 text-text-sub hover:bg-gray-100 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-white"></span>
+</button>
+<button class="p-2 text-text-sub hover:bg-gray-100 rounded-full transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
+<div class="max-w-7xl mx-auto flex flex-col gap-6">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="text-2xl font-bold text-text-main tracking-tight">Quản lý Sản phẩm</h2>
+<p class="text-text-sub text-sm mt-1">Quản lý danh sách, kho hàng và thông tin sản phẩm của bạn.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-text-main hover:bg-gray-50 shadow-sm transition-all">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                                Xuất Excel
+                            </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-blue-700 shadow-md shadow-blue-500/20 transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                                Thêm sản phẩm
+                            </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-surface p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+<div class="size-10 rounded-full bg-blue-50 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<div>
+<p class="text-xs text-text-sub uppercase font-semibold">Tổng sản phẩm</p>
+<p class="text-xl font-bold text-text-main">1,240</p>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+<div class="size-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-600">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<p class="text-xs text-text-sub uppercase font-semibold">Sắp hết hàng</p>
+<p class="text-xl font-bold text-text-main">8</p>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+<div class="size-10 rounded-full bg-red-50 flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined">block</span>
+</div>
+<div>
+<p class="text-xs text-text-sub uppercase font-semibold">Hết hàng</p>
+<p class="text-xl font-bold text-text-main">2</p>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+<div class="size-10 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined">visibility</span>
+</div>
+<div>
+<p class="text-xs text-text-sub uppercase font-semibold">Đang hiển thị</p>
+<p class="text-xl font-bold text-text-main">1,180</p>
+</div>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+<div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+<div class="relative w-full md:w-80">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-text-sub text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2.5 bg-background-light border border-gray-200 rounded-lg text-sm w-full focus:ring-2 focus:ring-primary/20 focus:border-primary text-text-main" placeholder="Tìm tên sản phẩm, SKU..." type="text"/>
+</div>
+<select class="py-2.5 pl-3 pr-10 bg-background-light border border-gray-200 rounded-lg text-sm text-text-main focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer">
+<option>Tất cả danh mục</option>
+<option>Laptop</option>
+<option>Điện thoại</option>
+<option>Tablet</option>
+<option>Phụ kiện</option>
+</select>
+<select class="py-2.5 pl-3 pr-10 bg-background-light border border-gray-200 rounded-lg text-sm text-text-main focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer">
+<option>Tất cả trạng thái</option>
+<option>Đang bán</option>
+<option>Nháp</option>
+<option>Ẩn</option>
+</select>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto justify-end">
+<span class="text-sm text-text-sub">Hiển thị:</span>
+<select class="py-1.5 pl-2 pr-8 bg-transparent border-none text-sm font-semibold text-text-main focus:ring-0 cursor-pointer">
+<option>10 hàng</option>
+<option>20 hàng</option>
+<option>50 hàng</option>
+</select>
+</div>
+</div>
+<div class="bg-surface rounded-xl shadow-card border border-gray-50 overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-background-light/50 border-b border-gray-100 text-xs uppercase text-text-sub font-semibold tracking-wide">
+<th class="px-6 py-4 w-12">
+<input class="rounded border-gray-300 text-primary focus:ring-primary size-4" type="checkbox"/>
+</th>
+<th class="px-6 py-4 min-w-[300px]">Sản phẩm</th>
+<th class="px-6 py-4">Danh mục</th>
+<th class="px-6 py-4">Giá bán</th>
+<th class="px-6 py-4">Tồn kho</th>
+<th class="px-6 py-4">Trạng thái</th>
+<th class="px-6 py-4 text-right">Hành động</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-50">
+<tr class="group hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<input class="rounded border-gray-300 text-primary focus:ring-primary size-4" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-gray-100 bg-cover bg-center border border-gray-200 shadow-sm shrink-0" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDN6LojpLUJBy1TnBvPeZCxrc-LJGIEQenYnV91EKAiK3DVazGfpbQR8GDaJVWjF2QlnhQKMIkoMe1lttlxJBhSbQpZxxxWV9hwTBMUH2OyMv1rwCZPzpOT5-CZu3hhD2kp--uSJLkKz89BxNwsMKJ9QXWCpJBRm6knwLq_xrt-m2UhEUXTGnHVl2cWf9r78RxkNrkPGhpAG0-8xfPsEWZ0zxIF4XxJRVCA8ySevT32EGwI3P7p9sN3eNxdOGx1sUpu6PEsyxqBu7FJ')"></div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-text-main group-hover:text-primary transition-colors cursor-pointer">MacBook Air M2 13"</span>
+<span class="text-xs text-text-sub">SKU: MBA-M2-13-SLV</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-text-main">Laptop</td>
+<td class="px-6 py-4 text-sm font-bold text-text-main">$1,099</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-xs font-medium text-text-main">
+<span>45</span>
+<span class="text-text-sub font-normal">trong kho</span>
+</div>
+<div class="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-green-500 rounded-full" style="width: 60%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                                Đang bán
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-text-sub hover:text-primary hover:bg-blue-50 rounded-lg transition-colors" title="Chỉnh sửa">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 text-text-sub hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Xóa">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="group hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<input class="rounded border-gray-300 text-primary focus:ring-primary size-4" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-gray-100 bg-cover bg-center border border-gray-200 shadow-sm shrink-0" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDyPfWIdK2YPZdkVe-_7mUbTFc59ynYAI4FtYT92EnzQbLTyzqxlq7ncGio3PBl_xaJuQ3Shf3fnPRQrYQlTaeSr5bfNHtLLYIO8AoxqWjJyReo1n6ixD-p7fDEtJDCENUmHtLeStpEbtEoL2Xz8dhKKs0GpJngG_EDvsRLLpQuccxpKdW_xYZNq1JrvKDbNN2woq9qdtjHpMjI1bVaNzma4i5n-Du5qJ6SKuijnGPdM0W9xKtcmatY2MGxUoJfyn6XUqiUs0xFFLyJ')"></div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-text-main group-hover:text-primary transition-colors cursor-pointer">iPad Pro 11" M2</span>
+<span class="text-xs text-text-sub">SKU: IPP-11-M2-GRY</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-text-main">Tablet</td>
+<td class="px-6 py-4 text-sm font-bold text-text-main">$799</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-xs font-medium text-orange-600">
+<span>5</span>
+<span class="text-text-sub font-normal">sắp hết</span>
+</div>
+<div class="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-orange-500 rounded-full" style="width: 15%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                                Đang bán
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-text-sub hover:text-primary hover:bg-blue-50 rounded-lg transition-colors" title="Chỉnh sửa">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 text-text-sub hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Xóa">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="group hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<input class="rounded border-gray-300 text-primary focus:ring-primary size-4" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-gray-100 bg-cover bg-center border border-gray-200 shadow-sm shrink-0 flex items-center justify-center text-text-sub">
+<span class="material-symbols-outlined text-2xl">headphones</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-text-main group-hover:text-primary transition-colors cursor-pointer">Sony WH-1000XM5</span>
+<span class="text-xs text-text-sub">SKU: SONY-WH5-BLK</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-text-main">Phụ kiện</td>
+<td class="px-6 py-4 text-sm font-bold text-text-main">$348</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-xs font-medium text-text-main">
+<span>120</span>
+<span class="text-text-sub font-normal">trong kho</span>
+</div>
+<div class="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-blue-500 rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                                Nháp
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-text-sub hover:text-primary hover:bg-blue-50 rounded-lg transition-colors" title="Chỉnh sửa">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 text-text-sub hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Xóa">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="group hover:bg-gray-50 transition-colors bg-red-50/30">
+<td class="px-6 py-4">
+<input class="rounded border-gray-300 text-primary focus:ring-primary size-4" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-gray-100 bg-cover bg-center border border-gray-200 shadow-sm shrink-0 flex items-center justify-center text-text-sub">
+<span class="material-symbols-outlined text-2xl">smartphone</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-text-main group-hover:text-primary transition-colors cursor-pointer">iPhone 13 Mini</span>
+<span class="text-xs text-text-sub">SKU: IPH-13M-PNK</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-text-main">Điện thoại</td>
+<td class="px-6 py-4 text-sm font-bold text-text-main">$599</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-xs font-medium text-red-600">
+<span>0</span>
+<span class="text-text-sub font-normal">hết hàng</span>
+</div>
+<div class="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-red-500 rounded-full" style="width: 0%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                                                Hết hàng
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-text-sub hover:text-primary hover:bg-blue-50 rounded-lg transition-colors" title="Chỉnh sửa">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 text-text-sub hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Xóa">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+<p class="text-sm text-text-sub">Hiển thị <span class="font-medium text-text-main">1</span> đến <span class="font-medium text-text-main">4</span> của <span class="font-medium text-text-main">124</span> sản phẩm</p>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm text-text-sub hover:bg-gray-50 disabled:opacity-50" disabled="">Trước</button>
+<button class="px-3 py-1.5 bg-primary text-white text-sm rounded-lg hover:bg-blue-700 shadow-sm shadow-blue-500/30">1</button>
+<button class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm text-text-sub hover:bg-gray-50">2</button>
+<button class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm text-text-sub hover:bg-gray-50">3</button>
+<span class="px-2 py-1.5 text-text-sub">...</span>
+<button class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm text-text-sub hover:bg-gray-50">12</button>
+<button class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm text-text-sub hover:bg-gray-50">Sau</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div aria-labelledby="modal-title" aria-modal="true" class="hidden fixed inset-0 z-50 overflow-y-auto" id="product-modal" role="dialog">
+<div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+<div aria-hidden="true" class="fixed inset-0 bg-background-dark/50 backdrop-blur-sm transition-opacity"></div>
+<span aria-hidden="true" class="hidden sm:inline-block sm:align-middle sm:h-screen">​</span>
+<div class="relative inline-block align-bottom bg-surface rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-gray-100">
+<div class="bg-surface px-6 py-4 border-b border-gray-100 flex items-center justify-between sticky top-0 z-10">
+<h3 class="text-lg font-bold text-text-main" id="modal-title">Thêm sản phẩm mới</h3>
+<button class="text-text-sub hover:text-text-main transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="px-6 py-6 max-h-[70vh] overflow-y-auto">
+<form class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="col-span-1 md:col-span-2 space-y-2">
+<label class="text-sm font-medium text-text-main">Tên sản phẩm <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border-gray-200 bg-background-light text-text-main text-sm focus:border-primary focus:ring-primary" placeholder="Ví dụ: MacBook Air M2 2023" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-text-main">Danh mục <span class="text-red-500">*</span></label>
+<select class="w-full rounded-lg border-gray-200 bg-background-light text-text-main text-sm focus:border-primary focus:ring-primary">
+<option value="">Chọn danh mục</option>
+<option value="laptop">Laptop</option>
+<option value="phone">Điện thoại</option>
+<option value="tablet">Tablet</option>
+<option value="accessories">Phụ kiện</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-text-main">Mã SKU</label>
+<input class="w-full rounded-lg border-gray-200 bg-background-light text-text-main text-sm focus:border-primary focus:ring-primary" placeholder="MBA-M2-2023" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-medium text-text-main">Giá bán ($) <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border-gray-200 bg-background-light text-text-main text-sm focus:border-primary focus:ring-primary" placeholder="0.00" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-text-main">Giá khuyến mãi ($)</label>
+<input class="w-full rounded-lg border-gray-200 bg-background-light text-text-main text-sm focus:border-primary focus:ring-primary" placeholder="0.00" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-text-main">Số lượng kho</label>
+<input class="w-full rounded-lg border-gray-200 bg-background-light text-text-main text-sm focus:border-primary focus:ring-primary" placeholder="0" type="number"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-text-main">Hình ảnh sản phẩm</label>
+<div class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:bg-background-light/50 transition-colors cursor-pointer">
+<div class="space-y-1 text-center">
+<span class="material-symbols-outlined text-4xl text-gray-400">cloud_upload</span>
+<div class="flex text-sm text-text-sub justify-center">
+<label class="relative cursor-pointer rounded-md font-medium text-primary hover:text-blue-700 focus-within:outline-none" for="file-upload">
+<span>Tải ảnh lên</span>
+<input class="sr-only" id="file-upload" name="file-upload" type="file"/>
+</label>
+<p class="pl-1">hoặc kéo thả vào đây</p>
+</div>
+<p class="text-xs text-text-sub">PNG, JPG, GIF tối đa 10MB</p>
+</div>
+</div>
+<div class="flex gap-4 mt-2">
+<div class="relative size-16 rounded-lg border border-gray-200 bg-gray-50 overflow-hidden group">
+<img alt="Preview" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJUxb-mgoUPFgWxWO81pHntGlkFOX6Kzcn4pS15cJvVJsMkl-5tRtph8OO5oW5ddYtJt0_yTnhjvFfynFNT6-eCs_-6QpInAd2rv9LBHet6Rug2DX3-NQ1iUab30cK6vlsAi5koaIhskfZXQ-3IJfsPlSPI1j2wIGUlr0E7QiTCR4vTTFS_GYyHJAfYx1_744u2OAOOWaCz3RRX262j2PC4pvAlfkqTDYYquJAPMl3TKSewUoOeYVY7MqT8wyrfOoFeaPvZAUubs10"/>
+<button class="absolute inset-0 bg-black/40 hidden group-hover:flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-text-main">Mô tả chi tiết</label>
+<textarea class="w-full rounded-lg border-gray-200 bg-background-light text-text-main text-sm focus:border-primary focus:ring-primary" placeholder="Nhập mô tả sản phẩm..." rows="4"></textarea>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<label class="text-sm font-medium text-text-main">Thông số kỹ thuật</label>
+<button class="text-xs font-medium text-primary hover:underline" type="button">+ Thêm thông số</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<input class="rounded-lg border-gray-200 bg-background-light text-text-main text-sm focus:border-primary focus:ring-primary" placeholder="Tên thông số (VD: RAM)" type="text"/>
+<input class="rounded-lg border-gray-200 bg-background-light text-text-main text-sm focus:border-primary focus:ring-primary" placeholder="Giá trị (VD: 8GB)" type="text"/>
+</div>
+</div>
+</form>
+</div>
+<div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3 border-t border-gray-100">
+<button class="w-full sm:w-auto px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-text-main hover:bg-gray-50 shadow-sm transition-all" type="button">
+                            Hủy bỏ
+                        </button>
+<button class="w-full sm:w-auto px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-blue-700 shadow-md shadow-blue-500/20 transition-all" type="button">
+                            Lưu sản phẩm
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<div aria-labelledby="modal-title" aria-modal="true" class="hidden fixed inset-0 z-50 overflow-y-auto" id="delete-modal" role="dialog">
+<div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+<div aria-hidden="true" class="fixed inset-0 bg-background-dark/50 backdrop-blur-sm transition-opacity"></div>
+<span aria-hidden="true" class="hidden sm:inline-block sm:align-middle sm:h-screen">​</span>
+<div class="relative inline-block align-bottom bg-surface rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full border border-gray-100 p-6">
+<div class="sm:flex sm:items-start">
+<div class="mx-auto flex-shrink-0 flex items-center justify-center size-12 rounded-full bg-red-100 sm:mx-0 sm:size-10">
+<span class="material-symbols-outlined text-red-600">warning</span>
+</div>
+<div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+<h3 class="text-lg leading-6 font-bold text-text-main" id="modal-title">Xóa sản phẩm?</h3>
+<div class="mt-2">
+<p class="text-sm text-text-sub">Bạn có chắc chắn muốn xóa sản phẩm <span class="font-bold text-text-main">MacBook Air M2 13"</span> không? Hành động này không thể hoàn tác.</p>
+</div>
+</div>
+</div>
+<div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse gap-3">
+<button class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm" type="button">
+                            Xóa
+                        </button>
+<button class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-text-main hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:w-auto sm:text-sm" type="button">
+                            Hủy
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

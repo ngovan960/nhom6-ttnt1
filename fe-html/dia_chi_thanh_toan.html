@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Thanh toán - TechZone</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d59f2",
+                        "primary-dark": "#0b4bc6",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101622",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>.scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111318] dark:text-gray-100 min-h-screen flex flex-col">
+<header class="sticky top-0 z-50 w-full bg-white dark:bg-surface-dark border-b border-[#f0f1f5] dark:border-gray-700 px-4 py-3 lg:px-10">
+<div class="max-w-[1440px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-8 bg-primary/10 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">bolt</span>
+</div>
+<h2 class="text-primary-dark dark:text-white text-xl font-black tracking-tight">TechZone</h2>
+</div>
+<div class="hidden md:flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-lg">lock</span>
+<span>Thanh toán an toàn SSL</span>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-[1440px] mx-auto px-4 lg:px-10 py-8">
+<div class="flex flex-col lg:flex-row gap-8 xl:gap-12">
+<div class="flex-1 flex flex-col gap-8">
+<nav class="flex flex-wrap gap-2 text-sm font-medium">
+<a class="text-gray-500 hover:text-primary transition-colors" href="#">Giỏ hàng</a>
+<span class="text-gray-400">/</span>
+<span class="text-primary font-bold">Thanh toán</span>
+<span class="text-gray-400">/</span>
+<span class="text-gray-400">Hoàn tất</span>
+</nav>
+<div>
+<h1 class="text-3xl lg:text-4xl font-black tracking-tight text-[#111318] dark:text-white mb-2">Thanh toán</h1>
+<p class="text-gray-500 dark:text-gray-400">Vui lòng kiểm tra kỹ thông tin trước khi đặt hàng.</p>
+</div>
+<div class="flex items-center gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg text-sm text-primary-dark dark:text-blue-300">
+<span class="material-symbols-outlined">account_circle</span>
+<p>Bạn đang đăng nhập là <strong>Trần Minh Hùng</strong>. <a class="font-bold underline decoration-primary decoration-2 underline-offset-2 hover:text-primary" href="#">Đổi tài khoản?</a></p>
+</div>
+<section class="bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+<div class="flex items-center justify-between mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<h2 class="text-lg font-bold">Địa chỉ nhận hàng</h2>
+</div>
+<button class="text-sm font-bold text-primary hover:text-primary-dark transition-colors flex items-center gap-1 bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-base">add</span>
+                            Thêm địa chỉ mới
+                        </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<label class="relative block p-4 rounded-xl border-2 border-primary bg-primary/5 cursor-pointer transition-all group">
+<div class="absolute top-4 right-4 text-primary">
+<span class="material-symbols-outlined text-2xl">check_circle</span>
+</div>
+<input checked="" class="peer sr-only" name="shipping_address" type="radio"/>
+<div class="flex items-center gap-2 mb-2 pr-8">
+<span class="font-bold text-[#111318] dark:text-white text-base">Trần Minh Hùng</span>
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary text-white">Mặc định</span>
+</div>
+<p class="text-sm text-gray-700 dark:text-gray-300 font-medium mb-1">(+84) 912 345 678</p>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">123 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh</p>
+<div class="mt-3 pt-3 border-t border-primary/20 flex gap-4 text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="hover:underline cursor-pointer">Chỉnh sửa</span>
+</div>
+</label>
+<label class="relative block p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 cursor-pointer transition-all bg-white dark:bg-gray-800 hover:shadow-md group">
+<input class="peer sr-only" name="shipping_address" type="radio"/>
+<div class="absolute top-4 right-4 text-gray-300 peer-checked:text-primary">
+<span class="material-symbols-outlined text-2xl">radio_button_unchecked</span>
+</div>
+<div class="flex items-center gap-2 mb-2 pr-8">
+<span class="font-bold text-[#111318] dark:text-white text-base">Công ty TechZone</span>
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500">Văn phòng</span>
+</div>
+<p class="text-sm text-gray-700 dark:text-gray-300 font-medium mb-1">(+84) 987 654 321</p>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">Tầng 15, Tòa nhà Bitexco, 2 Hải Triều, Quận 1, TP. Hồ Chí Minh</p>
+<div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 flex gap-4 text-xs font-semibold text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="hover:text-primary hover:underline cursor-pointer">Chỉnh sửa</span>
+<span class="hover:text-red-500 hover:underline cursor-pointer">Xóa</span>
+</div>
+</label>
+<label class="relative block p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 cursor-pointer transition-all bg-white dark:bg-gray-800 hover:shadow-md group">
+<input class="peer sr-only" name="shipping_address" type="radio"/>
+<div class="absolute top-4 right-4 text-gray-300 peer-checked:text-primary">
+<span class="material-symbols-outlined text-2xl">radio_button_unchecked</span>
+</div>
+<div class="flex items-center gap-2 mb-2 pr-8">
+<span class="font-bold text-[#111318] dark:text-white text-base">Nhà Bố Mẹ</span>
+<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500">Nhà riêng</span>
+</div>
+<p class="text-sm text-gray-700 dark:text-gray-300 font-medium mb-1">(+84) 909 888 777</p>
+<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">456 Đường Láng, Đống Đa, Hà Nội</p>
+<div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 flex gap-4 text-xs font-semibold text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="hover:text-primary hover:underline cursor-pointer">Chỉnh sửa</span>
+<span class="hover:text-red-500 hover:underline cursor-pointer">Xóa</span>
+</div>
+</label>
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 text-gray-500 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all min-h-[160px] group">
+<div class="size-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-2xl">add</span>
+</div>
+<span class="font-semibold text-sm">Thêm địa chỉ mới</span>
+</button>
+</div>
+<div class="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700">
+<label class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-400 text-lg">edit_note</span>
+                                Ghi chú cho đơn hàng (Tùy chọn)
+                            </span>
+<textarea class="form-textarea w-full rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-800 focus:border-primary focus:ring-primary min-h-[80px] px-4 py-3 text-sm placeholder:text-gray-400" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao, để ở lễ tân..."></textarea>
+</label>
+</div>
+</section>
+<section class="bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+<div class="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
+<span class="material-symbols-outlined text-primary">payments</span>
+<h2 class="text-lg font-bold">Phương thức thanh toán</h2>
+</div>
+<div class="space-y-4">
+<label class="relative flex items-start gap-4 p-4 rounded-xl border border-primary bg-primary/5 cursor-pointer transition-all hover:bg-primary/10 shadow-sm">
+<input checked="" class="mt-1 text-primary focus:ring-primary border-gray-300" name="payment_method" type="radio"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold text-[#111318] dark:text-white">Thanh toán khi nhận hàng (COD)</span>
+<span class="material-symbols-outlined text-gray-500">local_shipping</span>
+</div>
+<p class="text-sm text-gray-500">Thanh toán bằng tiền mặt khi shipper giao hàng đến.</p>
+</div>
+</label>
+<label class="relative flex items-start gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 cursor-pointer transition-all hover:shadow-sm">
+<input class="mt-1 text-primary focus:ring-primary border-gray-300" name="payment_method" type="radio"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold text-[#111318] dark:text-white">Thẻ Tín dụng / Ghi nợ</span>
+<div class="flex gap-2 text-gray-400">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+</div>
+<p class="text-sm text-gray-500">Visa, Mastercard, JCB. An toàn và bảo mật.</p>
+</div>
+</label>
+<label class="relative flex items-start gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 cursor-pointer transition-all hover:shadow-sm">
+<input class="mt-1 text-primary focus:ring-primary border-gray-300" name="payment_method" type="radio"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold text-[#111318] dark:text-white">Ví điện tử MoMo / ZaloPay</span>
+<span class="material-symbols-outlined text-gray-500">account_balance_wallet</span>
+</div>
+<p class="text-sm text-gray-500">Quét mã QR để thanh toán nhanh chóng.</p>
+</div>
+</label>
+</div>
+</section>
+</div>
+<aside class="lg:w-[400px] xl:w-[440px] flex-shrink-0">
+<div class="sticky top-24 space-y-6">
+<div class="bg-white dark:bg-surface-dark rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+<div class="p-5 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+<h3 class="font-bold text-lg text-[#111318] dark:text-white">Đơn hàng (2 sản phẩm)</h3>
+</div>
+<div class="p-5 max-h-[300px] overflow-y-auto scrollbar-hide">
+<div class="space-y-4">
+<div class="flex gap-4">
+<div class="w-16 h-16 flex-shrink-0 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden bg-white">
+<img alt="Silver laptop on a clean desk" class="w-full h-full object-cover" data-alt="Silver laptop on a clean desk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQCQH3RDjYkgprHjSAAvD-hzij7RdiOrWjJLMht7_ASljXV5xkadkdoWMJR081U6E95QQYFu-r0Z6LYPB6FfcLLTzYe-wkXuv6ak68V64u00gcPVFoEkVKT01GIJ_M720U2W7qQjCEIJdTs9-Kan2EHnZMpFvXADpN6fLpGnfRsYhydN54WDHIC-tgHeaSkmFlcVrbi4NgPtGx6C8WM3qa9i10KXDeE42XtI3QLePm9n9Cx3ot-XMO16L-I1grlBiknX7UEvA0rrDs"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-medium text-sm text-[#111318] dark:text-white line-clamp-2">MacBook Air M2 2022 13.6 inch (8GB/256GB) - Silver</h4>
+<div class="flex justify-between items-center mt-1">
+<p class="text-xs text-gray-500">Số lượng: 1</p>
+<p class="font-semibold text-sm">26.990.000₫</p>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-16 h-16 flex-shrink-0 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden bg-white">
+<img alt="Mechanical keyboard close up" class="w-full h-full object-cover" data-alt="Mechanical keyboard close up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqLkq_V2qVz4H7CvObDQsJIZeWd0YO58qzlY0mf9mv4fKOh9btbAoFgBQ0ruyA7LaPTl1EUsJTNWrmXkN4V_-z_G9hGkOVIqyyWWsYH7iHDkXY-tnRzQViNHEOwBa0WZohULc6GlJQY-o4P7Dt39VYGr8kCyIMRPjeVup6_lY0WBFbKPqh8BBpdH-pyOTmZuYzQZj7SuvdqiLs1EZ4CGPEOpLs-BuL7UbphLb4Myj-dEH_8EcfFyFYC-wQxrp4Wny_90hEIq1VmSbD"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-medium text-sm text-[#111318] dark:text-white line-clamp-2">Bàn phím cơ Keychron K2 Pro (Red Switch)</h4>
+<div class="flex justify-between items-center mt-1">
+<p class="text-xs text-gray-500">Số lượng: 1</p>
+<p class="font-semibold text-sm">2.490.000₫</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="px-5 pb-5 border-b border-gray-100 dark:border-gray-700">
+<div class="flex gap-2">
+<input class="form-input flex-1 rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-800 text-sm h-10 px-3" placeholder="Mã giảm giá" type="text"/>
+<button class="px-4 h-10 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm font-semibold rounded-lg transition-colors">Áp dụng</button>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+<span>Tạm tính</span>
+<span>29.480.000₫</span>
+</div>
+<div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+<span>Phí vận chuyển</span>
+<span class="text-green-600 dark:text-green-400">Miễn phí</span>
+</div>
+<div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+<span>Giảm giá</span>
+<span>-0₫</span>
+</div>
+<div class="pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-between items-end">
+<span class="font-bold text-gray-900 dark:text-white">Tổng cộng</span>
+<span class="text-2xl font-black text-primary tracking-tight">29.480.000₫</span>
+</div>
+</div>
+<div class="p-5 pt-0">
+<button class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold h-12 rounded-lg transition-all shadow-lg shadow-primary/30">
+<span>Đặt hàng ngay</span>
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+<p class="text-xs text-center text-gray-500 mt-3">Bằng việc đặt hàng, bạn đồng ý với <a class="underline hover:text-primary" href="#">Điều khoản dịch vụ</a> của TechZone.</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4 text-center">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-primary text-3xl">verified_user</span>
+<span class="text-[10px] uppercase font-bold text-gray-500">Bảo mật 100%</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-primary text-3xl">local_shipping</span>
+<span class="text-[10px] uppercase font-bold text-gray-500">Free Ship</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-primary text-3xl">change_circle</span>
+<span class="text-[10px] uppercase font-bold text-gray-500">Đổi trả 30 ngày</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<footer class="mt-auto py-8 bg-white dark:bg-surface-dark border-t border-[#f0f1f5] dark:border-gray-700">
+<div class="max-w-[1440px] mx-auto px-10 text-center">
+<p class="text-sm text-gray-500 mb-2">© 2024 TechZone. All rights reserved.</p>
+<div class="flex justify-center gap-6 text-sm text-gray-400">
+<a class="hover:text-primary" href="#">Chính sách bảo mật</a>
+<a class="hover:text-primary" href="#">Điều khoản sử dụng</a>
+<a class="hover:text-primary" href="#">Liên hệ hỗ trợ</a>
+</div>
+</div>
+</footer>
+
+</body></html>

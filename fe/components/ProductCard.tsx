@@ -1,6 +1,7 @@
 import React from 'react';
 import { Product } from '../types';
 import { formatCurrency } from '../constants';
+import { useCompareStore } from '@/store/useCompareStore';
 
 interface ProductCardProps {
   product: Product;
@@ -9,7 +10,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
   return (
-    <div 
+    <div
       onClick={() => onClick?.(product)}
       className="group flex flex-col bg-white dark:bg-[#2a291c] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full cursor-pointer"
     >
@@ -25,18 +26,30 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
             New
           </div>
         )}
-        
+
         <img
           alt={product.name}
           className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal group-hover:scale-105 transition-transform duration-500"
-          src={product.image}
+          src={product.images && product.images.length > 0 ? product.images[0] : product.image}
         />
-        
-        <button className="absolute bottom-3 right-3 size-10 rounded-full bg-white dark:bg-black text-[#181811] dark:text-white shadow-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0 hover:bg-primary hover:text-black">
-          <span className="material-symbols-outlined">add_shopping_cart</span>
-        </button>
+
+        <div className="absolute bottom-3 right-3 flex flex-col gap-2 z-20">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              useCompareStore.getState().addItem(product);
+            }}
+            className="size-10 rounded-full bg-white dark:bg-black text-[#181811] dark:text-white shadow-md flex items-center justify-center translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all hover:bg-secondary hover:text-black"
+            title="So sánh"
+          >
+            <span className="material-symbols-outlined">compare_arrows</span>
+          </button>
+          <button className="size-10 rounded-full bg-white dark:bg-black text-[#181811] dark:text-white shadow-md flex items-center justify-center translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all hover:bg-primary hover:text-black">
+            <span className="material-symbols-outlined">add_shopping_cart</span>
+          </button>
+        </div>
       </div>
-      
+
       <div className="flex flex-col gap-1 flex-1">
         <p className="text-xs font-bold text-[#8c8b5f] dark:text-[#bebdb0] uppercase tracking-wide">
           {product.brand}

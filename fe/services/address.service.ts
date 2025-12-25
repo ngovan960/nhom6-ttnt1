@@ -2,7 +2,7 @@ import axiosClient from "../lib/axios";
 
 export const addressService = {
   getMyAddresses: async () => {
-    const res = await axiosClient.get('/addresses');
+    const res = await axiosClient.get('/address');
     return res;
   }
 };

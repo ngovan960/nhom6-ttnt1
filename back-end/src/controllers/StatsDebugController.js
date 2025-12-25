@@ -1,8 +1,7 @@
 import db from "../model/index.js";
 const { Order, OrderItem, Product, sequelize } = db;
 
-// Get Revenue Statistics (Grouped by Date)
-export const getRevenueStats = async (req, res) => {
+export const getPublicDebugStats = async (req, res) => {
   try {
     const revenue = await Order.findAll({
       attributes: [
@@ -17,16 +16,6 @@ export const getRevenueStats = async (req, res) => {
       order: [[sequelize.fn("DATE", sequelize.col("Order.createdAt")), "DESC"]],
     });
 
-    res.status(200).json(revenue);
-  } catch (error) {
-    console.error("Error fetching revenue stats:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-};
-
-// Get Best Selling Products
-export const getBestSellingProducts = async (req, res) => {
-  try {
     const bestSelling = await OrderItem.findAll({
       attributes: [
         "product_id",
@@ -35,17 +24,20 @@ export const getBestSellingProducts = async (req, res) => {
       include: [
         {
           model: Product,
-          attributes: ["name", "price", ["thumbnail", "image"], "stock"], // Alias thumbnail as image for frontend consistency
+          attributes: ["name", "price", "image", "stock"],
         },
       ],
-      group: ["product_id", "Product.id"], // Group by product_id and Product.id to allow including Product fields
+      group: ["product_id", "Product.id"],
       order: [[sequelize.col("total_sold"), "DESC"]],
-      limit: 10, // Top 10 best selling
+      limit: 10,
     });
 
-    res.status(200).json(bestSelling);
+    res.json({
+        revenue,
+        bestSelling
+    });
   } catch (error) {
-    console.error("Error fetching best selling products:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error("DEBUG STATS ERROR:", error);
+    res.status(500).json({ error: error.message, stack: error.stack });
   }
 };

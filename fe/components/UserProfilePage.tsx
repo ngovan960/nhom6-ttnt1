@@ -2,19 +2,37 @@ import React, { useState } from 'react';
 import { User } from './Header';
 import { useAuthStore } from '../store/useAuthStore';
 
+import { addressService } from '../services/address.service';
+
 interface UserProfilePageProps {
   user: User;
   onLogout: () => void;
   onBack: () => void;
   onFavoritesClick: () => void;
+  onAddressClick: () => void;
 }
 
-const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBack, onFavoritesClick }) => {
+const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBack, onFavoritesClick, onAddressClick }) => {
   const updateProfile = useAuthStore((s) => s.updateProfile);
   const [editing, setEditing] = useState(false);
   const [nameValue, setNameValue] = useState(user?.name || '');
   const [phoneValue, setPhoneValue] = useState('');
   const [saving, setSaving] = useState(false);
+  const [defaultAddress, setDefaultAddress] = useState<any>(null);
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const list = await addressService.getMyAddresses();
+        if (Array.isArray(list) && list.length > 0) {
+          const def = list.find((a: any) => a.is_default);
+          setDefaultAddress(def || list[0]);
+        }
+      } catch (e) {
+        // ignore
+      }
+    })();
+  }, []);
 
   const handleEdit = () => {
     setNameValue(user?.name || '');
@@ -97,7 +115,7 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
                 <span className="material-symbols-outlined group-hover:text-[#0d0df2] transition-colors">favorite</span>
                 Danh sách yêu thích
               </a>
-              <a className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#60608a] dark:text-gray-400 hover:bg-[#f0f0f5] dark:hover:bg-gray-800 hover:text-[#111118] dark:hover:text-white transition-colors group cursor-pointer">
+              <a onClick={onAddressClick} className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#60608a] dark:text-gray-400 hover:bg-[#f0f0f5] dark:hover:bg-gray-800 hover:text-[#111118] dark:hover:text-white transition-colors group cursor-pointer">
                 <span className="material-symbols-outlined group-hover:text-[#0d0df2] transition-colors">location_on</span>
                 Sổ địa chỉ
               </a>
@@ -272,15 +290,26 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
                   <span className="material-symbols-outlined text-[#60608a] dark:text-gray-400 text-lg">home</span>
                   Địa chỉ mặc định
                 </h3>
-                <div className="bg-[#f9fafb] dark:bg-gray-800 p-3 rounded-lg border border-[#f0f0f5] dark:border-gray-700">
-                  <p className="text-sm font-medium text-[#111118] dark:text-white">Văn phòng</p>
-                  <p className="text-sm text-[#60608a] dark:text-gray-400 mt-1 leading-relaxed">
-                    Tòa nhà Bitexco Financial Tower, Số 2 Hải Triều<br />
-                    Phường Bến Nghé, Quận 1<br />
-                    TP. Hồ Chí Minh
-                  </p>
-                </div>
-                <button className="mt-4 w-full flex items-center justify-center gap-2 py-2 rounded-lg border border-dashed border-[#0d0df2]/40 text-[#0d0df2] hover:bg-[#0d0df2]/5 hover:border-[#0d0df2] dark:border-blue-500/40 dark:text-blue-400 dark:hover:bg-blue-500/10 transition-all text-sm font-medium">
+                {defaultAddress ? (
+                  <div className="bg-[#f9fafb] dark:bg-gray-800 p-3 rounded-lg border border-[#f0f0f5] dark:border-gray-700">
+                    <p className="text-sm font-medium text-[#111118] dark:text-white flex items-center gap-2">
+                      {defaultAddress.full_name}
+                      <span className="text-xs font-normal text-gray-500">({defaultAddress.phone})</span>
+                    </p>
+                    <p className="text-sm text-[#60608a] dark:text-gray-400 mt-1 leading-relaxed">
+                      {defaultAddress.address_detail}, {defaultAddress.ward}<br />
+                      {defaultAddress.district}, {defaultAddress.city}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-dashed text-center">
+                    <p className="text-sm text-gray-500">Chưa có địa chỉ mặc định</p>
+                  </div>
+                )}
+                <button
+                  onClick={onAddressClick}
+                  className="mt-4 w-full flex items-center justify-center gap-2 py-2 rounded-lg border border-dashed border-[#0d0df2]/40 text-[#0d0df2] hover:bg-[#0d0df2]/5 hover:border-[#0d0df2] dark:border-blue-500/40 dark:text-blue-400 dark:hover:bg-blue-500/10 transition-all text-sm font-medium"
+                >
                   <span className="material-symbols-outlined text-[18px]">add_circle</span>
                   Thêm địa chỉ mới
                 </button>

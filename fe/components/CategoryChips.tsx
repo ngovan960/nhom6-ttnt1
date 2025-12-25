@@ -1,27 +1,22 @@
-import React, { useState } from 'react';
-import { CATEGORIES } from '../constants';
+import React from 'react';
+import { Category } from '../types';
 
 interface Props {
-  onSelect?: (categoryId: string) => void;
+  categories: Category[];
+  activeCategoryId: string | number;
+  onSelect: (categoryId: string | number) => void;
 }
 
-const CategoryChips: React.FC<Props> = ({ onSelect }) => {
-  const [activeCategory, setActiveCategory] = useState('all');
-
-  const handleClick = (id: string) => {
-    setActiveCategory(id);
-    onSelect?.(id);
-  };
-
+const CategoryChips: React.FC<Props> = ({ categories, activeCategoryId, onSelect }) => {
   return (
     <div className="mb-10">
       <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-2 snap-x">
-        {CATEGORIES.map((category) => {
-          const isActive = activeCategory === category.id;
+        {categories.map((category) => {
+          const isActive = String(activeCategoryId) === String(category.id);
           return (
             <button
               key={category.id}
-              onClick={() => handleClick(category.id)}
+              onClick={() => onSelect(category.id)}
               className={`
                 group flex h-10 shrink-0 items-center gap-2 rounded-full px-5 transition-all snap-start active:scale-95 border
                 ${isActive
@@ -31,7 +26,7 @@ const CategoryChips: React.FC<Props> = ({ onSelect }) => {
               `}
             >
               <span className={`material-symbols-outlined text-[20px] ${isActive ? 'text-white' : 'text-[#5e5d4a] dark:text-[#bebdb0] group-hover:text-primary'}`}>
-                {category.icon}
+                {category.icon || 'category'}
               </span>
               <span className={`text-sm ${isActive ? 'font-bold' : 'font-medium text-[#181811] dark:text-white'}`}>
                 {category.name}

@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 
@@ -22,6 +23,8 @@ import paymentRoutes from "./routes/payment.route.js";
 import orderRoutes from "./routes/order.route.js";
 import searchRoutes from "./routes/search.routes.js";
 import aiRoutes from "./routes/ai.routes.js";
+import statsRoutes from "./routes/statsRoutes.js";
+// Removed duplicate import and usage
 
 const app = express();
 
@@ -60,8 +63,13 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/search", searchRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/stats", statsRoutes);
+// Removed duplicate usage
 
 /* ================== TEST ================== */
+import { getPublicDebugStats } from "./controllers/StatsDebugController.js";
+app.get("/api/debug-stats", getPublicDebugStats);
+
 app.get("/", (req, res) => {
   res.send("🚀 API is running");
 });

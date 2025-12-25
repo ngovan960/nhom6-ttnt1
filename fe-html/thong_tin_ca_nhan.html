@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TechZone - Tổng quan tài khoản</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d0df2",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111118]">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+<header class="bg-white border-b border-[#f0f0f5] sticky top-0 z-50">
+<div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16 gap-4">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2 text-primary group" href="#">
+<div class="size-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-xl">bolt</span>
+</div>
+<h2 class="text-[#111118] text-xl font-bold tracking-tight">TechZone</h2>
+</a>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-[#60608a] hover:text-primary transition-colors" href="#">Sản phẩm</a>
+<a class="text-sm font-medium text-[#60608a] hover:text-primary transition-colors" href="#">Laptop</a>
+<a class="text-sm font-medium text-[#60608a] hover:text-primary transition-colors" href="#">Điện thoại</a>
+<a class="text-sm font-medium text-[#60608a] hover:text-primary transition-colors" href="#">Khuyến mãi</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end items-center gap-4">
+<div class="hidden lg:flex flex-1 max-w-md relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-[#60608a]">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2 border-none rounded-lg bg-[#f0f0f5] text-sm focus:ring-2 focus:ring-primary/20 placeholder-[#60608a]" placeholder="Tìm kiếm Laptop, điện thoại..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="relative p-2 rounded-lg hover:bg-[#f0f0f5] text-[#60608a] hover:text-[#111118] transition-colors">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-1 right-1 size-2 bg-red-500 rounded-full border border-white"></span>
+</button>
+<button class="hidden sm:flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full hover:bg-[#f0f0f5] border border-transparent hover:border-[#e5e5eb] transition-all">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="User avatar placeholder" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBEAW3hk20c4mZIk3Y6u5SVqyFv5-QISTCmtOVIbICORuknCD01RV8MEzGiUlyHOJTv-FjRokIccboinFMfwZOn76KWNMv6cXY7aKV5EGL4mmPUrUTVx5a6xj91xEkEwGPCc5iVcB0kXykQozA0pbamM5z3Ler30txKiK_lJFvpfcUTQTZcDPONjOD-8Q-6f3PzxBqLKj7c3QAxpeUQjKFUVpOWRgh5MEYPgD0oXHvG3b6mmkdjgqP-gbptmLG7NFpTlz8r16MOwMqQ');"></div>
+<span class="text-sm font-medium text-[#111118]">Hi, An</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<nav aria-label="Breadcrumb" class="flex mb-6">
+<ol class="inline-flex items-center space-x-1 md:space-x-3">
+<li class="inline-flex items-center">
+<a class="inline-flex items-center text-sm font-medium text-[#60608a] hover:text-primary" href="#">
+<span class="material-symbols-outlined text-lg mr-1">home</span>
+                        Trang chủ
+                    </a>
+</li>
+<li>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[#dbdbe6]">chevron_right</span>
+<span class="ml-1 text-sm font-medium text-[#111118] md:ml-2">Tài khoản của tôi</span>
+</div>
+</li>
+</ol>
+</nav>
+<div class="flex flex-col lg:flex-row gap-8">
+<aside class="w-full lg:w-72 shrink-0 space-y-4">
+<div class="bg-white rounded-xl p-5 shadow-sm border border-[#f0f0f5] flex items-center gap-4">
+<div class="relative">
+<div class="size-14 rounded-full bg-cover bg-center ring-2 ring-white shadow-md" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAG6bvjwhNHaZRUpsE0ilco61YzKHq5mDkrYAbm0MwUgeVeHpv_OzQaGMxTfH0rP8-8aaV5K5r6kl5gbhetmXZrgdeEXmhUs9t7xnsw41PrqkJ3eAALa7ktKwTFS3i2nEby5wEb7OnsG_7HJyK9dJVPsc9wgc1K56OCdBnOEWF8qNinRPJuK8G984bSjp3bMCVdO_eLG23MpPy6q3oyuxfK8E7i1-NX4tSNQazw3ZjRU6_6NuJU0dLFuLEwH6NQVJ6rvwcF8D1QkDLP');"></div>
+<div class="absolute bottom-0 right-0 bg-green-500 size-3.5 rounded-full border-2 border-white"></div>
+</div>
+<div class="overflow-hidden">
+<h3 class="font-bold text-[#111118] truncate">Nguyễn Văn An</h3>
+<p class="text-xs text-[#60608a] truncate">Thành viên Bạc</p>
+</div>
+</div>
+<nav class="bg-white rounded-xl shadow-sm border border-[#f0f0f5] overflow-hidden">
+<div class="p-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary font-medium transition-colors" href="#">
+<span class="material-symbols-outlined fill">dashboard</span>
+                            Tổng quan
+                        </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#60608a] hover:bg-[#f0f0f5] hover:text-[#111118] transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">person</span>
+                            Thông tin cá nhân
+                        </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#60608a] hover:bg-[#f0f0f5] hover:text-[#111118] transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">inventory_2</span>
+                            Lịch sử đơn hàng
+                            <span class="ml-auto bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">2</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#60608a] hover:bg-[#f0f0f5] hover:text-[#111118] transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">favorite</span>
+                            Danh sách yêu thích
+                        </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#60608a] hover:bg-[#f0f0f5] hover:text-[#111118] transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">location_on</span>
+                            Sổ địa chỉ
+                        </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#60608a] hover:bg-[#f0f0f5] hover:text-[#111118] transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                            Cài đặt tài khoản
+                        </a>
+<div class="h-px bg-[#f0f0f5] my-2 mx-2"></div>
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-[#60608a] hover:bg-red-50 hover:text-red-600 transition-colors">
+<span class="material-symbols-outlined">logout</span>
+                            Đăng xuất
+                        </button>
+</div>
+</nav>
+</aside>
+<div class="flex-1 min-w-0 space-y-6">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+<div>
+<h1 class="text-3xl font-black tracking-tight text-[#111118]">Tổng quan</h1>
+<p class="text-[#60608a] mt-1">Xin chào Nguyễn Văn An, chào mừng bạn quay trở lại TechZone.</p>
+</div>
+<button class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold px-4 py-2.5 rounded-lg transition-all shadow-lg shadow-primary/30">
+<span class="material-symbols-outlined text-sm">edit</span>
+                        Cập nhật hồ sơ
+                    </button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+<div class="bg-white p-5 rounded-xl border border-[#f0f0f5] shadow-sm flex items-center justify-between group hover:border-primary/30 transition-all">
+<div>
+<p class="text-sm font-medium text-[#60608a]">Tổng đơn hàng</p>
+<p class="text-2xl font-bold text-[#111118] mt-1">12</p>
+</div>
+<div class="size-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined fill text-xl">shopping_bag</span>
+</div>
+</div>
+<div class="bg-white p-5 rounded-xl border border-[#f0f0f5] shadow-sm flex items-center justify-between group hover:border-primary/30 transition-all">
+<div>
+<p class="text-sm font-medium text-[#60608a]">Tổng chi tiêu</p>
+<p class="text-2xl font-bold text-[#111118] mt-1">45.2M</p>
+</div>
+<div class="size-10 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined fill text-xl">payments</span>
+</div>
+</div>
+<div class="bg-white p-5 rounded-xl border border-[#f0f0f5] shadow-sm flex items-center justify-between group hover:border-primary/30 transition-all">
+<div>
+<p class="text-sm font-medium text-[#60608a]">Yêu thích</p>
+<p class="text-2xl font-bold text-[#111118] mt-1">14</p>
+</div>
+<div class="size-10 rounded-lg bg-pink-50 flex items-center justify-center text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined fill text-xl">favorite</span>
+</div>
+</div>
+<div class="bg-white p-5 rounded-xl border border-[#f0f0f5] shadow-sm flex items-center justify-between group hover:border-primary/30 transition-all">
+<div>
+<p class="text-sm font-medium text-[#60608a]">Ưu đãi khả dụng</p>
+<p class="text-2xl font-bold text-[#111118] mt-1">05</p>
+</div>
+<div class="size-10 rounded-lg bg-amber-50 flex items-center justify-center text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined fill text-xl">local_offer</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<div class="xl:col-span-2 space-y-6">
+<div class="bg-white rounded-xl shadow-sm border border-[#f0f0f5] overflow-hidden">
+<div class="p-5 border-b border-[#f0f0f5] flex items-center justify-between">
+<h2 class="text-lg font-bold text-[#111118]">Đơn hàng gần đây</h2>
+<a class="text-sm font-semibold text-primary hover:text-primary/80" href="#">Xem tất cả</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-[#f9fafb] text-[#60608a]">
+<tr>
+<th class="px-5 py-3 font-medium whitespace-nowrap">Mã đơn</th>
+<th class="px-5 py-3 font-medium whitespace-nowrap">Sản phẩm</th>
+<th class="px-5 py-3 font-medium whitespace-nowrap">Tổng tiền</th>
+<th class="px-5 py-3 font-medium whitespace-nowrap">Trạng thái</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#f0f0f5]">
+<tr class="hover:bg-[#f9fafb] transition-colors">
+<td class="px-5 py-4 font-medium text-[#111118]">#ORD-7352</td>
+<td class="px-5 py-4 text-[#111118] max-w-[200px] truncate">MacBook Air M2 2023...</td>
+<td class="px-5 py-4 font-medium text-[#111118]">24.990.000₫</td>
+<td class="px-5 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                    Đang giao
+                                                </span>
+</td>
+</tr>
+<tr class="hover:bg-[#f9fafb] transition-colors">
+<td class="px-5 py-4 font-medium text-[#111118]">#ORD-7351</td>
+<td class="px-5 py-4 text-[#111118] max-w-[200px] truncate">Chuột Logitech MX Master 3S</td>
+<td class="px-5 py-4 font-medium text-[#111118]">2.490.000₫</td>
+<td class="px-5 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    Hoàn thành
+                                                </span>
+</td>
+</tr>
+<tr class="hover:bg-[#f9fafb] transition-colors">
+<td class="px-5 py-4 font-medium text-[#111118]">#ORD-7348</td>
+<td class="px-5 py-4 text-[#111118] max-w-[200px] truncate">Tai nghe Sony WH-1000XM5</td>
+<td class="px-5 py-4 font-medium text-[#111118]">8.490.000₫</td>
+<td class="px-5 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                    Đã hủy
+                                                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="bg-white rounded-xl shadow-sm border border-[#f0f0f5] overflow-hidden">
+<div class="p-5 border-b border-[#f0f0f5] flex items-center justify-between">
+<h2 class="text-lg font-bold text-[#111118]">Sổ địa chỉ giao hàng</h2>
+<button class="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1">
+<span class="material-symbols-outlined text-base">add</span> Thêm mới
+                                </button>
+</div>
+<div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="border border-primary/30 bg-primary/5 rounded-lg p-4 relative">
+<div class="absolute top-4 right-4 text-primary">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+<span class="text-xs font-bold text-primary bg-white px-2 py-1 rounded border border-primary/20">Mặc định</span>
+<h4 class="font-semibold text-[#111118] mt-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-base">business</span> Văn phòng
+                                    </h4>
+<p class="text-sm text-[#60608a] mt-2 line-clamp-2 leading-relaxed">Tòa nhà Bitexco Financial Tower, Số 2 Hải Triều, Bến Nghé, Quận 1, TP.HCM</p>
+<div class="mt-4 flex gap-3 pt-3 border-t border-primary/10">
+<button class="text-xs font-medium text-[#60608a] hover:text-primary">Chỉnh sửa</button>
+</div>
+</div>
+<div class="border border-[#f0f0f5] hover:border-[#dbdbe6] rounded-lg p-4 transition-colors">
+<span class="text-xs font-bold text-[#60608a] bg-[#f5f5f8] px-2 py-1 rounded">Phụ</span>
+<h4 class="font-semibold text-[#111118] mt-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-base">home</span> Nhà riêng
+                                    </h4>
+<p class="text-sm text-[#60608a] mt-2 line-clamp-2 leading-relaxed">123 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP.HCM</p>
+<div class="mt-4 flex gap-3 pt-3 border-t border-[#f0f0f5]">
+<button class="text-xs font-medium text-primary hover:text-primary/80">Đặt mặc định</button>
+<button class="text-xs font-medium text-[#60608a] hover:text-primary">Chỉnh sửa</button>
+<button class="text-xs font-medium text-red-500 hover:text-red-700 ml-auto">Xóa</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<div class="bg-white rounded-xl shadow-sm border border-[#f0f0f5] overflow-hidden">
+<div class="p-5 border-b border-[#f0f0f5] flex items-center justify-between">
+<h2 class="text-lg font-bold text-[#111118]">Thông tin cá nhân</h2>
+<button class="size-8 flex items-center justify-center rounded-full hover:bg-[#f0f0f5] text-[#60608a] transition-colors" title="Chỉnh sửa">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+<div class="p-5 space-y-4">
+<div class="space-y-1">
+<label class="text-xs text-[#60608a] font-medium uppercase">Họ và tên</label>
+<div class="font-medium text-[#111118] py-1 border-b border-transparent hover:border-[#e5e5eb] transition-colors cursor-text">Nguyễn Văn An</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs text-[#60608a] font-medium uppercase">Email</label>
+<div class="font-medium text-[#111118] truncate py-1">nguyenvana.tech@gmail.com</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs text-[#60608a] font-medium uppercase">Số điện thoại</label>
+<div class="font-medium text-[#111118] py-1 border-b border-transparent hover:border-[#e5e5eb] transition-colors cursor-text">0912 *** 789</div>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-2">
+<div class="space-y-1">
+<label class="text-xs text-[#60608a] font-medium uppercase">Ngày sinh</label>
+<div class="font-medium text-[#111118]">01/01/1995</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs text-[#60608a] font-medium uppercase">Giới tính</label>
+<div class="font-medium text-[#111118]">Nam</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl shadow-sm border border-[#f0f0f5] overflow-hidden">
+<div class="p-5 border-b border-[#f0f0f5] flex items-center justify-between">
+<h2 class="text-lg font-bold text-[#111118]">Sản phẩm quan tâm</h2>
+<a class="text-xs font-bold text-primary uppercase tracking-wide" href="#">Tất cả</a>
+</div>
+<div class="divide-y divide-[#f0f0f5]">
+<div class="p-4 flex gap-3 hover:bg-[#f9fafb] transition-colors group cursor-pointer">
+<div class="size-16 rounded-lg bg-[#f0f0f5] flex items-center justify-center shrink-0 text-[#60608a] group-hover:bg-white group-hover:shadow-sm border border-transparent group-hover:border-[#e5e5eb] transition-all">
+<span class="material-symbols-outlined text-2xl">laptop_mac</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-semibold text-[#111118] truncate group-hover:text-primary transition-colors">MacBook Pro 14 M3</h4>
+<p class="text-xs text-[#60608a] mt-0.5">Space Gray, 16GB</p>
+<div class="flex items-center justify-between mt-2">
+<span class="text-sm font-bold text-[#111118]">39.990.000₫</span>
+<button class="size-7 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="p-4 flex gap-3 hover:bg-[#f9fafb] transition-colors group cursor-pointer">
+<div class="size-16 rounded-lg bg-[#f0f0f5] flex items-center justify-center shrink-0 text-[#60608a] group-hover:bg-white group-hover:shadow-sm border border-transparent group-hover:border-[#e5e5eb] transition-all">
+<span class="material-symbols-outlined text-2xl">headphones</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-semibold text-[#111118] truncate group-hover:text-primary transition-colors">Sony WH-1000XM5</h4>
+<p class="text-xs text-[#60608a] mt-0.5">Silver, Noise Cancelling</p>
+<div class="flex items-center justify-between mt-2">
+<span class="text-sm font-bold text-[#111118]">6.490.000₫</span>
+<button class="size-7 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl shadow-sm border border-[#f0f0f5] overflow-hidden">
+<div class="p-5 border-b border-[#f0f0f5]">
+<h2 class="text-lg font-bold text-[#111118]">Cài đặt nhanh</h2>
+</div>
+<div class="p-5 space-y-5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-lg bg-blue-50 text-blue-600">
+<span class="material-symbols-outlined text-lg">notifications_active</span>
+</div>
+<span class="text-sm font-medium text-[#111118]">Thông báo đẩy</span>
+</div>
+<button class="w-10 h-6 rounded-full bg-primary relative transition-colors focus:outline-none ring-offset-2 focus:ring-2 ring-primary/20">
+<span class="absolute right-0.5 top-0.5 size-5 bg-white rounded-full shadow-sm transition-transform"></span>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-lg bg-purple-50 text-purple-600">
+<span class="material-symbols-outlined text-lg">mail</span>
+</div>
+<span class="text-sm font-medium text-[#111118]">Nhận email ưu đãi</span>
+</div>
+<button class="w-10 h-6 rounded-full bg-[#e5e5eb] relative transition-colors focus:outline-none hover:bg-[#d1d1d6]">
+<span class="absolute left-0.5 top-0.5 size-5 bg-white rounded-full shadow-sm transition-transform"></span>
+</button>
+</div>
+<div class="pt-2 border-t border-[#f0f0f5]">
+<button class="w-full flex items-center justify-between text-sm font-medium text-[#60608a] hover:text-primary group py-2">
+<span>Đổi mật khẩu</span>
+<span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-white border-t border-[#f0f0f5] mt-auto">
+<div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="flex flex-col md:flex-row items-center justify-between gap-4">
+<p class="text-sm text-[#60608a]">© 2023 TechZone. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-sm text-[#60608a] hover:text-primary" href="#">Điều khoản sử dụng</a>
+<a class="text-sm text-[#60608a] hover:text-primary" href="#">Chính sách bảo mật</a>
+<a class="text-sm text-[#60608a] hover:text-primary" href="#">Hỗ trợ</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+</body></html>

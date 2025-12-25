@@ -1,10 +1,9 @@
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize("thuyloidoan", "root", "123456", {
-  host: "127.0.0.1",
-  port: 3307,
+const sequelize = new Sequelize("backend", "root", "password_123", {
+  host: "localhost",
   dialect: "mysql",
-  logging: false,
+  port: 3306,
 });
 
 export default sequelize;

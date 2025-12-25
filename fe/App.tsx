@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import { useAuthStore } from './store/useAuthStore';
+import { useCompareStore } from '@/store/useCompareStore';
 import Hero from './components/Hero';
 import CategoryChips from './components/CategoryChips';
 import ProductCard from './components/ProductCard';
@@ -21,9 +21,22 @@ import { PRODUCTS } from './constants';
 import { Product } from './types';
 import { productService } from './services/product.service';
 import { useCartStore } from './store/useCartStore';
+import React, { useState, useEffect, Suspense } from 'react';
+
+// Lazy load admin components
+const AdminDashboard = React.lazy(() => import('./components/admin/AdminDashboard'));
+const AdminProductPage = React.lazy(() => import('./components/admin/AdminProductPage'));
+const AdminOrderPage = React.lazy(() => import('./components/admin/AdminOrderPage'));
+const AdminCouponPage = React.lazy(() => import('./components/admin/AdminCouponPage'));
+const AdminLoginPage = React.lazy(() => import('./components/admin/AdminLoginPage'));
+const AdminUserPage = React.lazy(() => import('./components/admin/AdminUserPage'));
+
+// Lazy load user new components
+const OrderSuccessPage = React.lazy(() => import('./components/OrderSuccessPage'));
+const UserAddressPage = React.lazy(() => import('./components/UserAddressPage'));
 
 const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<'home' | 'login' | 'register' | 'search' | 'product-detail' | 'cart' | 'checkout' | 'user-profile' | 'favorites' | 'ai-search' | 'comparison' | 'reset-password'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'login' | 'register' | 'search' | 'product-detail' | 'cart' | 'checkout' | 'user-profile' | 'favorites' | 'ai-search' | 'comparison' | 'reset-password' | 'admin-dashboard' | 'admin-products' | 'admin-orders' | 'admin-coupons' | 'admin-customers' | 'order-success' | 'user-address'>('home');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -36,20 +49,37 @@ const App: React.FC = () => {
   const [resetToken, setResetToken] = useState<string | null>(null);
   const loadCart = useCartStore((s) => s.loadCart);
 
+  const [categories, setCategories] = useState<any[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string | number>('all');
+  const [autoOpenAddressModal, setAutoOpenAddressModal] = useState(false);
+
   useEffect(() => {
     const m = window.location.pathname.match(/^\/reset-password\/([^/]+)/);
     if (m) {
       setResetToken(m[1]);
       setCurrentView('reset-password');
+    } else if (window.location.pathname.startsWith('/admin')) {
+      // Check if logged in agent or need login
+      if (storeUser?.role === 'admin') {
+        setCurrentView('admin-dashboard');
+      } else {
+        setCurrentView('admin-dashboard'); // Will be guarded in renderContent
+      }
+    } else if (window.location.pathname === '/comparison' || window.location.pathname === '/so--sanh') {
+      setCurrentView('comparison');
     }
-    // fetch products once on mount
+    // fetch products & categories once on mount
     (async () => {
       try {
         setProductsLoading(true);
-        const list = await productService.getAll();
-        setProducts(list);
+        const [prodList, catList] = await Promise.all([
+          productService.getAll(),
+          productService.getCategories()
+        ]);
+        setProducts(prodList);
+        setCategories(catList);
       } catch (err) {
-        console.error('Failed to load products', err);
+        console.error('Failed to load initial data', err);
       } finally {
         setProductsLoading(false);
       }
@@ -95,25 +125,16 @@ const App: React.FC = () => {
     }
   };
 
-  const categoryToId: Record<string, number | 'all'> = {
-    all: 'all',
-    laptop: 6,
-    phone: 7,
-    tablet: 8,
-    audio: 9,
-    watch: 10,
-  };
-
-  const handleCategorySelect = async (categoryKey: string) => {
-    const mapped = categoryToId[categoryKey];
+  const handleCategorySelect = async (categoryId: string | number) => {
+    setActiveCategory(categoryId);
     setProductsLoading(true);
     try {
-      if (mapped === 'all') {
+      if (categoryId === 'all') {
         const list = await productService.getAll();
         setProducts(list);
         setCurrentView('home');
       } else {
-        const list = await productService.getByCategory(mapped as number);
+        const list = await productService.getByCategory(categoryId);
         setProducts(list);
         setCurrentView('home');
       }
@@ -123,6 +144,17 @@ const App: React.FC = () => {
       setProductsLoading(false);
     }
   };
+
+  // Sync URL with currentView (basic implementation)
+  useEffect(() => {
+    if (currentView === 'home') {
+      window.history.replaceState({}, '', '/');
+    } else if (currentView === 'admin-dashboard') {
+      window.history.replaceState({}, '', '/admin');
+    } else if (currentView === 'comparison') {
+      window.history.replaceState({}, '', '/comparison');
+    }
+  }, [currentView]);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
@@ -166,7 +198,7 @@ const App: React.FC = () => {
           className="bg-white dark:bg-[#2a291c] text-[#181811] dark:text-white px-5 py-3 rounded-full shadow-lg border border-[#e5e5e0] dark:border-[#3a3a2a] flex items-center gap-2 font-bold hover:scale-105 transition-transform hover:border-primary group"
         >
           <span className="material-symbols-outlined">compare_arrows</span>
-          <span className="hidden sm:inline">So sánh (2)</span>
+          <span className="hidden sm:inline">So sánh ({useCompareStore.getState().items.length})</span>
         </button>
 
         {/* AI Search Button */}
@@ -282,7 +314,11 @@ const App: React.FC = () => {
                 onAISearchClick={() => setCurrentView('ai-search')}
                 user={headerUser}
               />
-              <CheckoutPage onBack={() => setCurrentView('cart')} onComplete={() => setCurrentView('home')} />
+              <CheckoutPage
+                onBack={() => setCurrentView('cart')}
+                onComplete={() => setCurrentView('home')}
+                onAddAddress={() => setCurrentView('user-address')}
+              />
               <Footer />
             </div>
           </div>
@@ -309,6 +345,10 @@ const App: React.FC = () => {
                 onLogout={handleLogout}
                 onBack={() => setCurrentView('home')}
                 onFavoritesClick={() => setCurrentView('favorites')}
+                onAddressClick={() => {
+                  setAutoOpenAddressModal(true);
+                  setCurrentView('user-address');
+                }}
               />
               <Footer />
             </div>
@@ -384,6 +424,117 @@ const App: React.FC = () => {
             <FloatingControls />
           </div>
         );
+      /* ================= ADMIN ROUTES ================= */
+      case 'admin-dashboard':
+      case 'admin-products':
+      case 'admin-orders':
+      case 'admin-coupons':
+      case 'admin-customers':
+        // GUARD: If not admin, show AdminLoginPage
+        if (!storeUser || storeUser.role !== 'admin') {
+          return (
+            <Suspense fallback={<div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white">Đang tải...</div>}>
+              <AdminLoginPage
+                onLoginSuccess={() => setCurrentView('admin-dashboard')}
+                onBackToHome={() => setCurrentView('home')}
+              />
+            </Suspense>
+          );
+        }
+
+        switch (currentView) {
+          case 'admin-dashboard':
+            return (
+              <Suspense fallback={<div>Loading...</div>}>
+                <AdminDashboard
+                  onNavigate={(page) => {
+                    if (page === 'home') setCurrentView('home');
+                    else setCurrentView(`admin-${page}` as any);
+                  }}
+                />
+              </Suspense>
+            );
+          case 'admin-products':
+            return (
+              <Suspense fallback={<div>Loading...</div>}>
+                <AdminProductPage
+                  onNavigate={(page) => {
+                    if (page === 'home') setCurrentView('home');
+                    else setCurrentView(`admin-${page}` as any);
+                  }}
+                />
+              </Suspense>
+            );
+          case 'admin-orders':
+            return (
+              <Suspense fallback={<div>Loading...</div>}>
+                <AdminOrderPage
+                  onNavigate={(page) => {
+                    if (page === 'home') setCurrentView('home');
+                    else setCurrentView(`admin-${page}` as any);
+                  }}
+                />
+              </Suspense>
+            );
+          case 'admin-coupons':
+            return (
+              <Suspense fallback={<div>Loading...</div>}>
+                <AdminCouponPage
+                  onNavigate={(page) => {
+                    if (page === 'home') setCurrentView('home');
+                    else setCurrentView(`admin-${page}` as any);
+                  }}
+                />
+              </Suspense>
+            );
+          case 'admin-customers':
+            return (
+              <Suspense fallback={<div>Loading...</div>}>
+                <AdminUserPage
+                  onNavigate={(page) => {
+                    if (page === 'home') setCurrentView('home');
+                    else setCurrentView(`admin-${page}` as any);
+                  }}
+                />
+              </Suspense>
+            );
+          default:
+            return null;
+        }
+
+      /* ================= USER NEW ROUTES ================= */
+      case 'order-success':
+        return <OrderSuccessPage onContinue={() => setCurrentView('home')} />;
+      case 'user-address':
+        if (!storeUser) {
+          setCurrentView('login');
+          return null;
+        }
+        return (
+          <div className="relative flex h-auto min-h-screen w-full flex-col bg-[#f5f5f8] dark:bg-[#101022] overflow-x-hidden transition-colors duration-200 font-display text-[#111118] dark:text-white">
+            <div className="layout-container flex h-full grow flex-col">
+              <Header
+                onLoginClick={() => setCurrentView('login')}
+                onCartClick={() => setCurrentView('cart')}
+                onUserClick={() => setCurrentView('user-profile')}
+                onSearch={handleSearch}
+                onAISearchClick={() => setCurrentView('ai-search')}
+                user={headerUser}
+              />
+              <Suspense fallback={<div className="p-10 text-center">Đang tải...</div>}>
+                <UserAddressPage
+                  autoOpen={autoOpenAddressModal}
+                  onBack={() => {
+                    setAutoOpenAddressModal(false);
+                    setCurrentView('user-profile');
+                  }}
+                />
+              </Suspense>
+              <Footer />
+            </div>
+          </div>
+        );
+
       default: // 'home'
         return (
           <div className="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden transition-colors duration-200 font-display text-[#181811] dark:text-white">
@@ -400,7 +551,11 @@ const App: React.FC = () => {
               <main className="flex flex-1 flex-col px-4 md:px-10 lg:px-40 py-6 max-w-[1440px] mx-auto w-full">
                 <Hero />
 
-                <CategoryChips onSelect={handleCategorySelect} />
+                <CategoryChips
+                  categories={[{ id: 'all', name: 'Tất cả', icon: 'grid_view' }, ...categories]}
+                  activeCategoryId={activeCategory}
+                  onSelect={handleCategorySelect}
+                />
 
                 {/* Best Sellers Section */}
                 <div className="flex flex-col gap-6 mb-12">
