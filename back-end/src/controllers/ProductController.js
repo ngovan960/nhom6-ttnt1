@@ -3,9 +3,11 @@ import db from "../model/index.js";
 
 const { Product, ProductImage, sequelize } = db;
 
-/* ======================================================
-   GET /api/products
-   ====================================================== */
+/**
+ * Lấy danh sách tất cả sản phẩm, bao gồm các hình ảnh đi kèm.
+ * @param {Object} req - Đối tượng request.
+ * @param {Object} res - Đối tượng response.
+ */
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.findAll({
@@ -28,9 +30,11 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-/* ======================================================
-   GET /api/products/:id
-   ====================================================== */
+/**
+ * Lấy thông tin chi tiết của một sản phẩm dựa trên ID.
+ * @param {Object} req - Đối tượng request, chứa params id.
+ * @param {Object} res - Đối tượng response.
+ */
 export const getProductById = async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id, {
@@ -88,10 +92,11 @@ export const getProductsByCategoryId = async (req, res) => {
   }
 };
 
-/* ======================================================
-   POST /api/products
-   BODY: { ..., images: [] }
-   ====================================================== */
+/**
+ * Tạo mới một sản phẩm và lưu các hình ảnh đi kèm trong một transaction.
+ * @param {Object} req - Đối tượng request, chứa thông tin sản phẩm trong body.
+ * @param {Object} res - Đối tượng response.
+ */
 export const createProduct = async (req, res) => {
   const t = await sequelize.transaction();
 
@@ -150,10 +155,11 @@ export const createProduct = async (req, res) => {
   }
 };
 
-/* ======================================================
-   PUT /api/products/:id
-   (có thể update + replace images)
-   ====================================================== */
+/**
+ * Cập nhật thông tin sản phẩm và thay thế danh sách hình ảnh cũ.
+ * @param {Object} req - Đối tượng request, chứa params id và thông tin cập nhật trong body.
+ * @param {Object} res - Đối tượng response.
+ */
 export const updateProduct = async (req, res) => {
   const t = await sequelize.transaction();
 
@@ -200,9 +206,11 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-/* ======================================================
-   DELETE /api/products/:id
-   ====================================================== */
+/**
+ * Xóa một sản phẩm và tất cả hình ảnh liên quan.
+ * @param {Object} req - Đối tượng request, chứa params id.
+ * @param {Object} res - Đối tượng response.
+ */
 export const deleteProduct = async (req, res) => {
   const t = await sequelize.transaction();
 
@@ -233,9 +241,11 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
-/* ======================================================
-   GET /api/products/:id/related
-   ====================================================== */
+/**
+ * Lấy danh sách các sản phẩm liên quan (cùng danh mục) với sản phẩm hiện tại.
+ * @param {Object} req - Đối tượng request, chứa params id.
+ * @param {Object} res - Đối tượng response.
+ */
 export const getRelatedProducts = async (req, res) => {
   try {
     const { id } = req.params;

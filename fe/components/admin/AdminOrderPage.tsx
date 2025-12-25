@@ -13,7 +13,7 @@ interface Order {
 }
 
 interface AdminOrderPageProps {
-    onNavigate: (page: 'dashboard' | 'products' | 'orders' | 'coupons' | 'customers' | 'home') => void;
+    onNavigate: (page: 'dashboard' | 'products' | 'categories' | 'orders' | 'coupons' | 'customers' | 'home') => void;
 }
 
 const AdminOrderPage: React.FC<AdminOrderPageProps> = ({ onNavigate }) => {

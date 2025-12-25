@@ -16,7 +16,7 @@ interface Category {
 }
 
 interface AdminProductPageProps {
-    onNavigate: (page: 'dashboard' | 'products' | 'orders' | 'coupons' | 'customers' | 'home') => void;
+    onNavigate: (page: 'dashboard' | 'products' | 'categories' | 'orders' | 'coupons' | 'customers' | 'home') => void;
 }
 
 const AdminProductPage: React.FC<AdminProductPageProps> = ({ onNavigate }) => {

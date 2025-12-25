@@ -1,7 +1,12 @@
 import db from "../model/index.js";
 const { Order, OrderItem, Product, sequelize } = db;
 
-// Get Revenue Statistics (Grouped by Date)
+/**
+ * Lấy thống kê doanh thu theo ngày.
+ * Doanh thu chỉ tính cho các đơn hàng có trạng thái 'completed'.
+ * @param {Object} req - Đối tượng request.
+ * @param {Object} res - Đối tượng response.
+ */
 export const getRevenueStats = async (req, res) => {
   try {
     const revenue = await Order.findAll({
@@ -24,7 +29,11 @@ export const getRevenueStats = async (req, res) => {
   }
 };
 
-// Get Best Selling Products
+/**
+ * Lấy danh sách 10 sản phẩm bán chạy nhất dựa trên số lượng đã bán.
+ * @param {Object} req - Đối tượng request.
+ * @param {Object} res - Đối tượng response.
+ */
 export const getBestSellingProducts = async (req, res) => {
   try {
     const bestSelling = await OrderItem.findAll({

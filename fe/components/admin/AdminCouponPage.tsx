@@ -17,7 +17,7 @@ interface Coupon {
 }
 
 interface AdminCouponPageProps {
-    onNavigate: (page: 'dashboard' | 'products' | 'orders' | 'coupons' | 'customers' | 'home') => void;
+    onNavigate: (page: 'dashboard' | 'products' | 'categories' | 'orders' | 'coupons' | 'customers' | 'home') => void;
 }
 
 const AdminCouponPage: React.FC<AdminCouponPageProps> = ({ onNavigate }) => {

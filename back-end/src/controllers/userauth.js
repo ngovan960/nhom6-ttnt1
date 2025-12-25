@@ -5,6 +5,12 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
+/**
+ * Đăng nhập người dùng bằng email và mật khẩu.
+ * Trả về token JWT và thông tin người dùng nếu thành công.
+ * @param {Object} req - Đối tượng request, chứa email và password trong body.
+ * @param {Object} res - Đối tượng response.
+ */
 export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body || {};
@@ -55,6 +61,12 @@ export const userLogin = async (req, res) => {
   }
 };
 
+/**
+ * Đăng ký tài khoản người dùng mới.
+ * Kiểm tra sự tồn tại của email và mã hóa mật khẩu trước khi lưu.
+ * @param {Object} req - Đối tượng request, chứa email, fullname, password, phone trong body.
+ * @param {Object} res - Đối tượng response.
+ */
 export const userRegister = async (req, res) => {
   try {
     const { email, fullname, password, phone } = req.body;
@@ -90,7 +102,11 @@ export const userRegister = async (req, res) => {
   }
 };
 
-// send email reset password
+/**
+ * Xử lý yêu cầu quên mật khẩu bằng cách gửi email chứa link đặt lại mật khẩu.
+ * @param {Object} req - Đối tượng request, chứa email trong body.
+ * @param {Object} res - Đối tượng response.
+ */
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -131,7 +147,11 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-// verrify reset token
+/**
+ * Xác minh tính hợp lệ của token đặt lại mật khẩu.
+ * @param {Object} req - Đối tượng request, chứa token trong params.
+ * @param {Object} res - Đối tượng response.
+ */
 export const verifyResetToken = async (req, res) => {
   try {
     const { token } = req.params;
@@ -154,7 +174,11 @@ export const verifyResetToken = async (req, res) => {
   }
 };
 
-// reset password
+/**
+ * Đặt lại mật khẩu mới cho người dùng sau khi xác minh token.
+ * @param {Object} req - Đối tượng request, chứa token và newPassword trong body.
+ * @param {Object} res - Đối tượng response.
+ */
 export const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
@@ -185,6 +209,11 @@ export const resetPassword = async (req, res) => {
   }
 };
 
+/**
+ * Cập nhật thông tin hồ sơ của người dùng (họ tên, số điện thoại).
+ * @param {Object} req - Đối tượng request, chứa fullname và phone trong body.
+ * @param {Object} res - Đối tượng response.
+ */
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;

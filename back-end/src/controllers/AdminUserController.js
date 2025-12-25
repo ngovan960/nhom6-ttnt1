@@ -3,6 +3,11 @@ import { Op } from "sequelize";
 
 const { User } = db;
 
+/**
+ * Lấy danh sách tất cả người dùng có phân trang, tìm kiếm và lọc theo vai trò.
+ * @param {Object} req - Đối tượng request, chứa query params: page, limit, search, role.
+ * @param {Object} res - Đối tượng response.
+ */
 export const getAllUsers = async (req, res) => {
   try {
     const { page = 1, limit = 10, search, role } = req.query;
@@ -42,6 +47,11 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+/**
+ * Lấy thông tin chi tiết của một người dùng dựa trên ID, bao gồm địa chỉ và các đơn hàng gần đây.
+ * @param {Object} req - Đối tượng request, chứa params id.
+ * @param {Object} res - Đối tượng response.
+ */
 export const getUserDetail = async (req, res) => {
   try {
     const { id } = req.params;
@@ -63,6 +73,11 @@ export const getUserDetail = async (req, res) => {
   }
 };
 
+/**
+ * Cập nhật thông tin người dùng (vai trò, họ tên, số điện thoại) bởi Admin.
+ * @param {Object} req - Đối tượng request, chứa params id và body gồm role, fullname, phone.
+ * @param {Object} res - Đối tượng response.
+ */
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -86,6 +101,11 @@ export const updateUser = async (req, res) => {
   }
 };
 
+/**
+ * Xóa người dùng khỏi hệ thống dựa trên ID.
+ * @param {Object} req - Đối tượng request, chứa params id.
+ * @param {Object} res - Đối tượng response.
+ */
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;

@@ -30,13 +30,14 @@ const AdminOrderPage = React.lazy(() => import('./components/admin/AdminOrderPag
 const AdminCouponPage = React.lazy(() => import('./components/admin/AdminCouponPage'));
 const AdminLoginPage = React.lazy(() => import('./components/admin/AdminLoginPage'));
 const AdminUserPage = React.lazy(() => import('./components/admin/AdminUserPage'));
+const AdminCategoryPage = React.lazy(() => import('./components/admin/AdminCategoryPage'));
 
 // Lazy load user new components
 const OrderSuccessPage = React.lazy(() => import('./components/OrderSuccessPage'));
 const UserAddressPage = React.lazy(() => import('./components/UserAddressPage'));
 
 const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<'home' | 'login' | 'register' | 'search' | 'product-detail' | 'cart' | 'checkout' | 'user-profile' | 'favorites' | 'ai-search' | 'comparison' | 'reset-password' | 'admin-dashboard' | 'admin-products' | 'admin-orders' | 'admin-coupons' | 'admin-customers' | 'order-success' | 'user-address'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'login' | 'register' | 'search' | 'product-detail' | 'cart' | 'checkout' | 'user-profile' | 'favorites' | 'ai-search' | 'comparison' | 'reset-password' | 'admin-dashboard' | 'admin-products' | 'admin-categories' | 'admin-orders' | 'admin-coupons' | 'admin-customers' | 'order-success' | 'user-address'>('home');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -427,6 +428,7 @@ const App: React.FC = () => {
       /* ================= ADMIN ROUTES ================= */
       case 'admin-dashboard':
       case 'admin-products':
+      case 'admin-categories':
       case 'admin-orders':
       case 'admin-coupons':
       case 'admin-customers':
@@ -458,6 +460,17 @@ const App: React.FC = () => {
             return (
               <Suspense fallback={<div>Loading...</div>}>
                 <AdminProductPage
+                  onNavigate={(page) => {
+                    if (page === 'home') setCurrentView('home');
+                    else setCurrentView(`admin-${page}` as any);
+                  }}
+                />
+              </Suspense>
+            );
+          case 'admin-categories':
+            return (
+              <Suspense fallback={<div>Loading...</div>}>
+                <AdminCategoryPage
                   onNavigate={(page) => {
                     if (page === 'home') setCurrentView('home');
                     else setCurrentView(`admin-${page}` as any);

@@ -2,8 +2,8 @@ import React from 'react';
 
 interface AdminLayoutProps {
     children: React.ReactNode;
-    activePage: 'dashboard' | 'products' | 'orders' | 'coupons' | 'customers';
-    onNavigate: (page: 'dashboard' | 'products' | 'orders' | 'coupons' | 'customers' | 'home') => void;
+    activePage: 'dashboard' | 'products' | 'categories' | 'orders' | 'coupons' | 'customers';
+    onNavigate: (page: 'dashboard' | 'products' | 'categories' | 'orders' | 'coupons' | 'customers' | 'home') => void;
 }
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activePage, onNavigate }) => {
@@ -25,8 +25,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activePage, onNavig
                     <button
                         onClick={() => onNavigate('dashboard')}
                         className={`flex items-center gap-3 px-3 py-3 rounded-lg font-medium transition-colors w-full text-left ${activePage === 'dashboard'
-                                ? 'bg-primary/10 text-primary'
-                                : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
                             }`}
                     >
                         <span className="material-symbols-outlined" style={activePage === 'dashboard' ? { fontVariationSettings: "'FILL' 1" } : {}}>dashboard</span>
@@ -38,8 +38,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activePage, onNavig
                     <button
                         onClick={() => onNavigate('products')}
                         className={`flex items-center gap-3 px-3 py-3 rounded-lg font-medium transition-colors w-full text-left ${activePage === 'products'
-                                ? 'bg-primary/10 text-primary'
-                                : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
                             }`}
                     >
                         <span className="material-symbols-outlined" style={activePage === 'products' ? { fontVariationSettings: "'FILL' 1" } : {}}>inventory_2</span>
@@ -47,10 +47,21 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activePage, onNavig
                     </button>
 
                     <button
+                        onClick={() => onNavigate('categories')}
+                        className={`flex items-center gap-3 px-3 py-3 rounded-lg font-medium transition-colors w-full text-left ${activePage === 'categories'
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
+                            }`}
+                    >
+                        <span className="material-symbols-outlined" style={activePage === 'categories' ? { fontVariationSettings: "'FILL' 1" } : {}}>category</span>
+                        <span>Danh mục</span>
+                    </button>
+
+                    <button
                         onClick={() => onNavigate('orders')}
                         className={`flex items-center gap-3 px-3 py-3 rounded-lg font-medium transition-colors w-full text-left ${activePage === 'orders'
-                                ? 'bg-primary/10 text-primary'
-                                : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
                             }`}
                     >
                         <span className="material-symbols-outlined" style={activePage === 'orders' ? { fontVariationSettings: "'FILL' 1" } : {}}>shopping_bag</span>
@@ -60,8 +71,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activePage, onNavig
                     <button
                         onClick={() => onNavigate('coupons')}
                         className={`flex items-center gap-3 px-3 py-3 rounded-lg font-medium transition-colors w-full text-left ${activePage === 'coupons'
-                                ? 'bg-primary/10 text-primary'
-                                : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
                             }`}
                     >
                         <span className="material-symbols-outlined" style={activePage === 'coupons' ? { fontVariationSettings: "'FILL' 1" } : {}}>local_offer</span>
@@ -71,8 +82,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activePage, onNavig
                     <button
                         onClick={() => onNavigate('customers')}
                         className={`flex items-center gap-3 px-3 py-3 rounded-lg font-medium transition-colors w-full text-left ${activePage === 'customers'
-                                ? 'bg-primary/10 text-primary'
-                                : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-text-sub hover:bg-gray-50 hover:text-text-main'
                             }`}
                     >
                         <span className="material-symbols-outlined" style={activePage === 'customers' ? { fontVariationSettings: "'FILL' 1" } : {}}>group</span>

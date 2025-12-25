@@ -6,6 +6,10 @@ const { Product, AIRequest, AIRecommendation } = db;
 
 // Initialize Gemini
 let genAI;
+/**
+ * Khởi tạo và lấy đối tượng Google Generative AI (Gemini).
+ * @returns {GoogleGenerativeAI} Đối tượng Gemini AI.
+ */
 const getAI = () => {
     if (!genAI) {
         const key = process.env.GEMINI_API_KEY;
@@ -17,6 +21,11 @@ const getAI = () => {
     return genAI;
 };
 
+/**
+ * So sánh các sản phẩm dựa trên ID bằng AI Gemini.
+ * @param {Object} req - Đối tượng request, chứa body.productIds (mảng ID sản phẩm).
+ * @param {Object} res - Đối tượng response.
+ */
 export const compareProducts = async (req, res) => {
     const { productIds } = req.body;
     
@@ -98,6 +107,11 @@ export const compareProducts = async (req, res) => {
     }
 };
 
+/**
+ * Tư vấn và gợi ý sản phẩm dựa trên tin nhắn của người dùng bằng cách tìm kiếm từ khóa.
+ * @param {Object} req - Đối tượng request, chứa body.message.
+ * @param {Object} res - Đối tượng response.
+ */
 export const suggestProducts = async (req, res) => {
     const { message } = req.body;
     const userId = req.user ? req.user.id : null; // Có thể null nếu chưa login, nhưng route này thường authenticated
