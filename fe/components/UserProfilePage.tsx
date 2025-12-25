@@ -3,6 +3,7 @@ import { User } from './Header';
 import { useAuthStore } from '../store/useAuthStore';
 
 import { addressService } from '../services/address.service';
+import { orderService, Order } from '../services/order.service';
 
 interface UserProfilePageProps {
   user: User;
@@ -19,6 +20,9 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
   const [phoneValue, setPhoneValue] = useState('');
   const [saving, setSaving] = useState(false);
   const [defaultAddress, setDefaultAddress] = useState<any>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loadingOrders, setLoadingOrders] = useState(false);
+  const [wishlistCount, setWishlistCount] = useState(0);
 
   React.useEffect(() => {
     (async () => {
@@ -33,6 +37,34 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
       }
     })();
   }, []);
+
+  React.useEffect(() => {
+    (async () => {
+      setLoadingOrders(true);
+      try {
+        const { orders: fetchedOrders } = await orderService.getMyOrders();
+        setOrders(fetchedOrders || []);
+      } catch (e) {
+        console.error('Error fetching orders:', e);
+      } finally {
+        setLoadingOrders(false);
+      }
+    })();
+  }, []);
+
+  React.useEffect(() => {
+    if (user?.id) {
+      (async () => {
+        try {
+          const { wishlistService } = await import('../services/wishlist.service');
+          const { data } = await wishlistService.getWishlist(user.id);
+          setWishlistCount(data?.length || 0);
+        } catch (e) {
+          console.error('Error fetching wishlist:', e);
+        }
+      })();
+    }
+  }, [user]);
 
   const handleEdit = () => {
     setNameValue(user?.name || '');
@@ -54,6 +86,31 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
       setSaving(false);
     }
   };
+
+  const pendingOrdersCount = orders.filter(o => o.status === 'pending').length;
+
+  const getStatusBadgeClass = (status: string) => {
+    switch (status) {
+      case 'pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+      case 'processing': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      case 'shipping': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
+      case 'completed': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+      case 'cancelled': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'pending': return 'Chờ xử lý';
+      case 'processing': return 'Đang xử lý';
+      case 'shipping': return 'Đang giao';
+      case 'completed': return 'Hoàn thành';
+      case 'cancelled': return 'Đã hủy';
+      default: return status;
+    }
+  };
+
   return (
     <div className="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 font-inter">
       {/* Breadcrumbs */}
@@ -106,7 +163,7 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
               <a className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#60608a] dark:text-gray-400 hover:bg-[#f0f0f5] dark:hover:bg-gray-800 hover:text-[#111118] dark:hover:text-white transition-colors group cursor-pointer">
                 <span className="material-symbols-outlined group-hover:text-[#0d0df2] transition-colors">inventory_2</span>
                 Lịch sử đơn hàng
-                <span className="ml-auto bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">2</span>
+                <span className="ml-auto bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">{orders.length}</span>
               </a>
               <a
                 onClick={onFavoritesClick}
@@ -164,7 +221,7 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
             <div className="bg-white dark:bg-[#1a1a2e] p-5 rounded-xl border border-[#f0f0f5] dark:border-gray-800 shadow-sm flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-[#60608a] dark:text-gray-400">Đơn hàng chờ xử lý</p>
-                <p className="text-3xl font-bold text-[#111118] dark:text-white mt-1">02</p>
+                <p className="text-3xl font-bold text-[#111118] dark:text-white mt-1">{loadingOrders ? '...' : String(pendingOrdersCount).padStart(2, '0')}</p>
               </div>
               <div className="size-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600">
                 <span className="material-symbols-outlined fill">local_shipping</span>
@@ -174,9 +231,9 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
             <div className="bg-white dark:bg-[#1a1a2e] p-5 rounded-xl border border-[#f0f0f5] dark:border-gray-800 shadow-sm flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-[#60608a] dark:text-gray-400">Sản phẩm yêu thích</p>
-                <p className="text-3xl font-bold text-[#111118] dark:text-white mt-1">14</p>
+                <p className="text-3xl font-bold text-[#111118] dark:text-white mt-1">{loadingOrders ? '...' : String(wishlistCount).padStart(2, '0')}</p>
               </div>
-              <div className="size-12 rounded-full bg-pink-50 dark:bg-pink-900/20 flex items-center justify-center text-pink-600">
+              <div className="size-12 rounded-full bg-pink-50 dark:bg-pink-900/20 flex items-center justify-center text-pink-600 cursor-pointer" onClick={onFavoritesClick}>
                 <span className="material-symbols-outlined fill">favorite</span>
               </div>
             </div>
@@ -211,48 +268,44 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#f0f0f5] dark:divide-gray-800">
-                  <tr className="hover:bg-[#f9fafb] dark:hover:bg-gray-800 transition-colors">
-                    <td className="px-5 py-4 font-medium text-[#111118] dark:text-white">#ORD-7352</td>
-                    <td className="px-5 py-4 text-[#60608a] dark:text-gray-400">20/10/2023</td>
-                    <td className="px-5 py-4 text-[#111118] dark:text-white">MacBook Air M2 2023...</td>
-                    <td className="px-5 py-4 font-medium text-[#111118] dark:text-white">24.990.000₫</td>
-                    <td className="px-5 py-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                        Đang giao
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 text-right">
-                      <button className="text-[#60608a] dark:text-gray-400 hover:text-[#0d0df2] font-medium">Chi tiết</button>
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-[#f9fafb] dark:hover:bg-gray-800 transition-colors">
-                    <td className="px-5 py-4 font-medium text-[#111118] dark:text-white">#ORD-7351</td>
-                    <td className="px-5 py-4 text-[#60608a] dark:text-gray-400">15/10/2023</td>
-                    <td className="px-5 py-4 text-[#111118] dark:text-white">Chuột Logitech MX Master 3S</td>
-                    <td className="px-5 py-4 font-medium text-[#111118] dark:text-white">2.490.000₫</td>
-                    <td className="px-5 py-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                        Hoàn thành
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 text-right">
-                      <button className="text-[#60608a] dark:text-gray-400 hover:text-[#0d0df2] font-medium">Chi tiết</button>
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-[#f9fafb] dark:hover:bg-gray-800 transition-colors">
-                    <td className="px-5 py-4 font-medium text-[#111118] dark:text-white">#ORD-7348</td>
-                    <td className="px-5 py-4 text-[#60608a] dark:text-gray-400">02/10/2023</td>
-                    <td className="px-5 py-4 text-[#111118] dark:text-white">Tai nghe Sony WH-1000XM5</td>
-                    <td className="px-5 py-4 font-medium text-[#111118] dark:text-white">8.490.000₫</td>
-                    <td className="px-5 py-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                        Đã hủy
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 text-right">
-                      <button className="text-[#60608a] dark:text-gray-400 hover:text-[#0d0df2] font-medium">Chi tiết</button>
-                    </td>
-                  </tr>
+                  {loadingOrders ? (
+                    <tr>
+                      <td colSpan={6} className="px-5 py-10 text-center text-[#60608a]">Đang tải đơn hàng...</td>
+                    </tr>
+                  ) : orders.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="px-5 py-10 text-center text-[#60608a]">Bạn chưa có đơn hàng nào.</td>
+                    </tr>
+                  ) : (
+                    orders.slice(0, 5).map((order) => {
+                      const firstItem = order.OrderItems?.[0];
+                      const productNames = order.OrderItems?.map(item => item.Product.name).join(', ');
+                      const displayProducts = productNames?.length > 30 ? productNames.substring(0, 30) + '...' : productNames;
+
+                      return (
+                        <tr key={order.id} className="hover:bg-[#f9fafb] dark:hover:bg-gray-800 transition-colors">
+                          <td className="px-5 py-4 font-medium text-[#111118] dark:text-white">#ORD-{order.id}</td>
+                          <td className="px-5 py-4 text-[#60608a] dark:text-gray-400">
+                            {new Date(order.createdAt).toLocaleDateString('vi-VN')}
+                          </td>
+                          <td className="px-5 py-4 text-[#111118] dark:text-white">
+                            {displayProducts || 'N/A'}
+                          </td>
+                          <td className="px-5 py-4 font-medium text-[#111118] dark:text-white">
+                            {Number(order.total_price).toLocaleString('vi-VN')}₫
+                          </td>
+                          <td className="px-5 py-4">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(order.status)}`}>
+                              {getStatusText(order.status)}
+                            </span>
+                          </td>
+                          <td className="px-5 py-4 text-right">
+                            <button className="text-[#60608a] dark:text-gray-400 hover:text-[#0d0df2] font-medium">Chi tiết</button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
             </div>
@@ -262,7 +315,12 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
           <div className="bg-white dark:bg-[#1a1a2e] rounded-xl shadow-sm border border-[#f0f0f5] dark:border-gray-800 overflow-hidden">
             <div className="p-5 border-b border-[#f0f0f5] dark:border-gray-800 flex items-center justify-between">
               <h2 className="text-lg font-bold text-[#111118] dark:text-white">Thông tin tài khoản</h2>
-              <button className="text-sm font-semibold text-[#0d0df2] hover:text-[#0d0df2]/80">Chỉnh sửa</button>
+              <button
+                onClick={handleEdit}
+                className="text-sm font-semibold text-[#0d0df2] hover:text-[#0d0df2]/80"
+              >
+                Chỉnh sửa
+              </button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="p-5 border-b md:border-b-0 md:border-r border-[#f0f0f5] dark:border-gray-800">
@@ -277,11 +335,11 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ user, onLogout, onBac
                   </div>
                   <div>
                     <dt className="text-xs text-[#60608a] dark:text-gray-400 uppercase tracking-wider">Email</dt>
-                    <dd className="text-sm font-medium text-[#111118] dark:text-white mt-0.5">nguyenvana.tech@gmail.com</dd>
+                    <dd className="text-sm font-medium text-[#111118] dark:text-white mt-0.5">{user.email || 'N/A'}</dd>
                   </div>
                   <div>
                     <dt className="text-xs text-[#60608a] dark:text-gray-400 uppercase tracking-wider">Số điện thoại</dt>
-                    <dd className="text-sm font-medium text-[#111118] dark:text-white mt-0.5">0912 *** 789</dd>
+                    <dd className="text-sm font-medium text-[#111118] dark:text-white mt-0.5">{user.phone || 'Chưa cập nhật'}</dd>
                   </div>
                 </dl>
               </div>

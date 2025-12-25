@@ -11,6 +11,10 @@ export const getMyOrders = async (req, res) => {
       include: [
         { model: Payment, required: false },
         { model: Address, required: false },
+        {
+          model: OrderItem,
+          include: [{ model: Product }],
+        },
       ],
       order: [["createdAt", "DESC"]],
     });

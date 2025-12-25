@@ -157,7 +157,24 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onBack, 
               {cartLoading ? 'Đang thêm...' : 'Thêm vào giỏ hàng'}
             </button>
 
-            <button className="size-12 rounded-full border border-[#8c8b5f]/30 flex items-center justify-center hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all text-[#181811] dark:text-white">
+            <button
+              onClick={async () => {
+                const authUser = useAuthStore.getState().user;
+                if (!authUser) {
+                  alert('Vui lòng đăng nhập để thêm vào danh sách yêu thích');
+                  return;
+                }
+                try {
+                  const { wishlistService } = await import('../services/wishlist.service');
+                  await wishlistService.addToWishlist(product.id, authUser.id);
+                  alert('Đã thêm vào danh sách yêu thích');
+                } catch (err: any) {
+                  const msg = err?.message || 'Thêm vào danh sách yêu thích thất bại';
+                  alert(msg);
+                }
+              }}
+              className="size-12 rounded-full border border-[#8c8b5f]/30 flex items-center justify-center hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all text-[#181811] dark:text-white"
+            >
               <span className="material-symbols-outlined">favorite</span>
             </button>
           </div>

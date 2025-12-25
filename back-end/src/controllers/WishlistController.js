@@ -10,6 +10,7 @@ export const getWishlist = async (req, res) => {
 
     const items = await Wishlist.findAll({
       where: { user_id },
+      include: [{ model: Product }],
       order: [["createdAt", "DESC"]],
     });
 
